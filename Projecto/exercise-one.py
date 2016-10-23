@@ -7,10 +7,9 @@ test = fetch_20newsgroups(subset='test')
 import math
 import os
 
-
 listaDeFicheiros = []
 
-for file in os.listdir("C:/Users/Fernando/Desktop/fao30/documents"):
+for file in os.listdir(os.path.dirname(os.path.abspath(__file__)) + "\documents"):
     if file.endswith(".txt"):
         listaDeFicheiros += [file]
 
