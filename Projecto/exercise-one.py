@@ -14,6 +14,7 @@ for file in os.listdir("C:/Users/Fernando/Desktop/fao30/documents"):
     if file.endswith(".txt"):
         listaDeFicheiros += [file]
 
+print listaDeFicheiros
 
 def tf(word, blob):
     return blob.words.count(word) / len(blob.words)
@@ -31,7 +32,7 @@ def tfidf(word, blob, bloblist):
 blob1 = TextBlob(train.data[1])
 blob2 = TextBlob(train.data[2])
 blob3 = TextBlob(train.data[3])
-test = TextBlob("ola ola adeus")
+
 
 bloblist = [blob1, blob2, blob3]
 
