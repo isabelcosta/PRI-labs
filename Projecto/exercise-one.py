@@ -37,7 +37,7 @@ blob3 = TextBlob(train.data[3])
 bloblist = [blob1, blob2, blob3]
 
 # print "imprimes ?"
-print test.noun_phrases
+#print test.noun_phrases
 
 
 # print tf("guy",blob1)
