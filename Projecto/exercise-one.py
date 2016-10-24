@@ -13,10 +13,13 @@ import os
 i = 1
 fileList = []
 documentList = []
+listaDeFicheiros = []
 
-for file in os.listdir("C:/Users/Fernando/Desktop/PRI/PRI-labs/Projecto/fao30/documents"):
+currentPath = os.path.dirname(os.path.abspath(__file__)) + "\documents\\";
+
+for file in os.listdir(currentPath):
     if file.endswith(".txt"):
-        f = open("C:/Users/Fernando/Desktop/PRI/PRI-labs/Projecto/fao30/documents/" + file, 'r')
+        f = open(currentPath + file, 'r')
         content = f.read()
         fileList += [content]
         f.close()
