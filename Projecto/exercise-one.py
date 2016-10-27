@@ -3,17 +3,16 @@ from textblob import TextBlob
 
 from nltk.corpus import stopwords
 
-from sklearn.datasets import fetch_20newsgroups
-train = fetch_20newsgroups(subset='train')
-test = fetch_20newsgroups(subset='test')
 
 import math
 import os
 
 i = 1
 fileList = []
-documentList = []
-listaDeFicheiros = []
+documentWordList = []
+documentBiGramList = []
+
+
 
 currentPath = os.path.dirname(os.path.abspath(__file__)) + "\documents\\";
 
@@ -24,13 +23,23 @@ for file in os.listdir(currentPath):
         fileList += [content]
         f.close()
 
-
-
+#para cada documento da lista de docs
 for file in fileList:
+    #tornar conteudo num textblob
     docContent = TextBlob(file.decode('unicode_escape'))
-    documentList += [docContent]
+    stop_words = set(stopwords.words('english'))
+    # retira stopwords do content do documento
+    document_without_stop_words = list(set(docContent.words) - stop_words)
+
+    documentWordList += [document_without_stop_words]
+#    print document_without_stop_words
+#     documentSentence = " ".join(document_without_stop_words)
 
 
+
+
+# for document in documentList:
+#     print document.words
 
 def tf(word, docContent):
     return docContent.words.count(word) / len(docContent.words)
@@ -45,20 +54,25 @@ def tfidf(word, docContent, documentList):
     return tf(word, docContent) * idf(word, documentList)
 
 
-
-doc1 = TextBlob("ola, adeus,!!! the")
-doc2 = TextBlob(train.data[2])
-doc3 = TextBlob(train.data[3])
+doc1 = TextBlob("ola!!!, awsegdas, fewasdga!!! adeus.........the............")
 
 
-documentList = [doc1, doc2, doc3]
 
-# stop_words = set(stopwords.words('english'))
-# doc1 = set(doc1.words) - stop_words
+#doc2 = TextBlob(train.data[2])
+# doc3 = TextBlob(train.data[3])
 #
-# print doc1
 #
+# documentList = [doc1, doc2, doc3]
+stop_words = set(stopwords.words('english'))
+doc1 = set(doc1.words) - stop_words
+print doc1
+#
+# #
 # print idf("guy", documentFist)
 #
 # print doc1.ngrams(n=2)
 
+# list1 = ['1', '2', '3']
+# str1 = ' '.join(list1)
+#
+# print str1
