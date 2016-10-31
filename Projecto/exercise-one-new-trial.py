@@ -8,21 +8,17 @@ import os
 """ Functions """
 
 def tf(word, docContent):
-    print "hey1"
     return docContent.words.count(word) / len(docContent.words)
 
 def n_containing(word, documentList):
-    print "hey2"
     return sum(1 for docContent in documentList if word in TextBlob(docContent).words)
 
 def idf(word, documentList):
-    print "hey3"
     return math.log(len(documentList) / (1 + n_containing(word, documentList)))
 
 # docContent is TextBlob
 # documentList is a list with all documents
 def tfidf(word, docContent, documentList):
-    print "hey4"
     return tf(word, docContent) * idf(word, documentList)
 
 
@@ -39,6 +35,7 @@ docCandidatesScored = []
 docCandidates = []
 
 train = fetch_20newsgroups(subset='train');
+trainData = train.data[:10]
 
 # Use english text document to apply keyphrase extraction method
 f = open("candidates.txt", 'r')
@@ -71,15 +68,50 @@ docCandidates += docWithoutStopWords + documentBiGramList
 
 print docCandidates
 
+# ----------------------------------------------------------------------------------
+# Get relative path to documents
+# currentPath = os.path.dirname(os.path.abspath(__file__)) + "\docTest\\";
+#
+#
+# # Get all documents in "documents" directory into fileList
+# # Import documents into fileList
+# for fileX in os.listdir(currentPath):
+#     if fileX.endswith(".txt"):
+#         f = open(currentPath + fileX, 'r')
+#         content = f.read()
+#         fileList += [content]
+#         f.close()
+#
+
+# # create dictionary with words/bi-grams and it's score
+# for doc in fileList:
+#     # dictionary containing word/bi-grams and its scores of tf_idf{ word: tf_idf } for a certain document
+#     keyphrasesDict = {}
+#     for word in docCandidates:
+#         keyphrasesDict[word] = tfidf(word, TextBlob(doc.decode('unicode_escape')), fileList)
+#         print keyphrasesDict[word]
+#         print word
+#     docCandidatesScored += [keyphrasesDict]
+#
+# print docCandidatesScored
+
+# ----------------------------------------------------------------------------------
+
 # FIXME tf-idf calculations not working
 # create dictionary with words/bi-grams and it's score
-for trainDoc in train.data:
+for pos, trainDoc in enumerate(trainData):
     # dictionary containing word/bi-grams and its scores of tf_idf{ word: tf_idf } for a certain document
     keyphrasesDict = {}
+
+    print "\nDoc " + str(pos) + " ------------------------------\n"
+
     for word in docCandidates:
-        keyphrasesDict[word] = tfidf(word, TextBlob(trainDoc), train.data)
-        print keyphrasesDict[word]
-        print word
+        trainBlob = TextBlob(trainDoc.decode('unicode_escape'))
+        keyphrasesDict[word] = tfidf(word, trainBlob, trainData)
+        # print "-----------////////////------------"
+        # print trainDoc
+        print "Word: " + word + "     TF-IDF: " + str(keyphrasesDict[word])
+        # print "-----------////////////------------"
     docCandidatesScored += [keyphrasesDict]
 
-print docCandidatesScored
+#print docCandidatesScored
