@@ -25,12 +25,12 @@ writer.commit()
 
 ix = open_dir("C:\Users\Fernando\Desktop\PRI\PRI-labs\lab5\IndexDir")
 with ix.searcher() as searcher:
-    query = QueryParser("content", ix.schema, group=OrGroup).parse(u"zdffcjhnsdfggjxndrf")
+    query = QueryParser("content", ix.schema, group=OrGroup).parse(u"distinguish between")
     results = searcher.search(query, limit=100)
     for r in results:
         idList += [r.get("id")]
         print r
-        print "Number of results:", results.scored_length()
+    print "Number of results:", results.scored_length()
 
 print "lista de ID's: " + str(idList)
 file.close()

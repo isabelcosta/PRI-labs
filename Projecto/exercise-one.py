@@ -25,27 +25,27 @@ def tfidf(word, docContent, documentList):
 
 # ----------------""" Functions for BIGRAMS """-------------------- #
 
-def tfForBigram(word, docContent):
-    docContentAux = []
-    for bigram in docContent.ngrams(n=2):
-        docContentAux += [" ".join(bigram)]
-    return docContentAux.count(word) / len(docContentAux)
-
-def n_containingForBigram(word, documentList):
-    sumDoc = 0
-    for docContent in documentList:
-        docContentAux = []
-        for bigram in TextBlob(docContent).ngrams(n=2):
-            docContentAux += [" ".join(bigram)]
-        if word in docContentAux:
-            sumDoc += 1
-    return sumDoc
-
-def idfForBigram(word, documentList):
-    return math.log((len(documentList)+1) / (1 + n_containingForBigram(word, documentList)))
-
-def tfidfForBigram(word, docContent, documentList):
-    return tfForBigram(word, docContent) * idfForBigram(word, documentList)
+# def tfForBigram(word, docContent):
+#     docContentAux = []
+#     for bigram in docContent.ngrams(n=2):
+#         docContentAux += [" ".join(bigram)]
+#     return docContentAux.count(word) / len(docContentAux)
+#
+# def n_containingForBigram(word, documentList):
+#     sumDoc = 0
+#     for docContent in documentList:
+#         docContentAux = []
+#         for bigram in TextBlob(docContent).ngrams(n=2):
+#             docContentAux += [" ".join(bigram)]
+#         if word in docContentAux:
+#             sumDoc += 1
+#     return sumDoc
+#
+# def idfForBigram(word, documentList):
+#     return math.log((len(documentList)+1) / (1 + n_containingForBigram(word, documentList)))
+#
+# def tfidfForBigram(word, docContent, documentList):
+#     return tfForBigram(word, docContent) * idfForBigram(word, documentList)
 
 
 
@@ -53,8 +53,6 @@ def tfidfForBigram(word, docContent, documentList):
 
 result = []
 documentWordList = []
-documentBiGramList = []
-documentBiGramWordList = []
 docCandidatesScored = []
 
 # List of lists for each document candidates
@@ -70,7 +68,7 @@ f = open("candidates.txt", 'r')
 fileContent = f.read().decode('unicode_escape')
 f.close()
 
-print fileContent
+#print fileContent
 
 docContentBlob = TextBlob(fileContent)
 
@@ -114,7 +112,7 @@ documentBiGramList = []
 for word in docContentBlobWithoutStopWords.ngrams(n=2):
     documentBiGramList += [" ".join(word)]
 
-print documentBiGramList
+# print documentBiGramList
 
 # joins all words and bi-grams from a document
 docFinalCandidates = docWithoutStopWords + documentBiGramList
@@ -133,7 +131,7 @@ for pos, trainDoc in enumerate(finalDocList):
     # /// Create 2 diferent lists (words, bigrams) for each document and the candidates doc ////
 
     print "\nDoc " + str(pos) + " ------------------------------\n"
-    print "finalCandidates: " + str(docFinalCandidates)
+#    print "finalCandidates: " + str(docFinalCandidates)
     print " \n "
 
     for word in docFinalCandidates:
