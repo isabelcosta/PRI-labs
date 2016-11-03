@@ -3,9 +3,11 @@ from sklearn import metrics
 import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
+from nltk import ngrams
 import string
 import os
 import operator
+import numpy as np
 import codecs
 # __import__("exercise-1")
 
@@ -35,7 +37,7 @@ def extractKeyphrases(train, test):
 
     scores = {}
     for i in testvec.nonzero()[1]:
-        scores[str(feature_names[i])] = str(testvec[0, i])
+        scores[feature_names[i]] = testvec[0, i]
 
     topScores = sorted(scores.iteritems(), key=operator.itemgetter(1), reverse=True)[:5]
 
@@ -90,14 +92,55 @@ recall, and F1 scores achieved by the simple extraction method. Your program sho
 the mean average precision.
 '''
 
+'''     Functions           '''
+
+def calc_precision(knownKeys, predictedKeys):
+    # tp / (tp + fp)
+
+    # print knownKeys
+    # print predictedKeys
+    # total = 0
+    # for key in knownKeys:
+    #     if key in predictedKeys:
+    #         print key
+    #         total += 1
+    # print total
+
+    tp = sum(1 for key in knownKeys if key in predictedKeys)
+    fp = len(predictedKeys) - tp
+
+    return tp / (tp + fp)
+
+def calc_recall(knownKeys, predictedKeys):
+    # tp / (tp + fn)
+    tp = sum(1 for key in knownKeys if key in predictedKeys)
+    fn = len(knownKeys) - tp
+
+    return tp / (tp + fn)
+
+def calc_f1(knownKeys, predictedKeys):
+    # 2 * (precision * recall) / (precision + recall)
+    return 2 * (calc_precision(knownKeys, predictedKeys) * calc_recall(knownKeys, predictedKeys)) / (calc_precision(knownKeys, predictedKeys) + calc_recall(knownKeys, predictedKeys))
+
+def calc_mean_avg_precision(knownKeys, predictedKeys):
+    #
+    return
+
+def remove_duplicates(keyphrasesList):
+    seen = set()
+    seen_add = seen.add
+    return [x for x in keyphrasesList if not (x in seen or seen_add(x))]
+
+def get_ngrams(keyphrasesList, n):
+    return [' '.join(x) for x in ngrams(keyphrasesList, n)]
 '''     Global Variables     '''
 # contains the list of all dataset, each element represents a document from the dataset
 # {docName => [content]}
 fileList = {}
 # {docName => [known keyphrases]}
-knownKeyphrases = {}
+knownKeyphrases = []
 # {docName => [top keyphrases]}
-predictedKeyphrases = {}
+predictedKeyphrases = []
 
 # Get relative path to documents
 datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\documents\\";
@@ -134,14 +177,23 @@ for docFromDataset in os.listdir(datasetPath):
         # Use exercise-one to calculate top keyphrases to be associated with each document
         calculatedKeyScores = extractKeyphrases(fileList.values(), docContent)
 
+        docKeyphrasesList = docKeyphrases.split()
+
         # calculatedKeyScores = extractKeyphrases((fileList.values().remove(fileList[docName])), docKeyphrases)
-        knownKeyphrases[docName] = docKeyphrases.split("\n")
+        knownKeyphrases = get_ngrams(docKeyphrasesList, 2) + remove_duplicates(docKeyphrasesList)
         predictedKeyphrases = calculatedKeyScores.keys()
 
         # Performance metrics - Calculate precision, recall, F1 scores and mean average precision
 
+        # print "Metrics for document " + docFromDataset
+        # print "Precision: \t" + str(metrics.precision_score(kkNumpyArrays, pkNumpyArrays))
+        # print "Recall: \t" + str(metrics.recall_score(knownKeyphrases, predictedKeyphrases))
+        # print "F1-score: \t" + str(metrics.f1_score(knownKeyphrases, predictedKeyphrases))
+        # print "Mean Average Precision: \t" + str(metrics.average_precision_score(knownKeyphrases, predictedKeyphrases))
+
         print "Metrics for document " + docFromDataset
-        print "Precision: \t" + str(metrics.accuracy_score(knownKeyphrases, predictedKeyphrases))
-        print "Recall: \t" + str(metrics.precision_score(knownKeyphrases, predictedKeyphrases))
-        print "F1-score: \t" + str(metrics.average_precision_score(knownKeyphrases, predictedKeyphrases))
-        print "Mean Average Precision: \t" + str(metrics.f1_score(knownKeyphrases, predictedKeyphrases))
+        print "Precision: \t" + str(calc_precision(knownKeyphrases, predictedKeyphrases))
+        print "Recall: \t" + str(calc_recall(knownKeyphrases, predictedKeyphrases))
+        print "F1-score: \t" + str(calc_f1(knownKeyphrases, predictedKeyphrases))
+        # print "Mean Average Precision: \t" + str(metrics.average_precision_score(knownKeyphrases, predictedKeyphrases))
+
