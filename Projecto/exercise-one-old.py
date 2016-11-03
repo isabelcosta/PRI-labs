@@ -64,7 +64,7 @@ trainData = train.data[:9]
 
 
 # Use english text document to apply keyphrase extraction method
-f = open("candidates.txt", 'r')
+f = open("input.txt", 'r')
 fileContent = f.read().decode('unicode_escape')
 f.close()
 
