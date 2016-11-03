@@ -2,19 +2,21 @@ from sklearn.datasets import fetch_20newsgroups
 from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 import string
+from nltk.corpus import stopwords
 import os
 import operator
 
-#train = fetch_20newsgroups(subset="train")
+#train = fetch_20newsgroups(subset='train')
 
 # --------------------------------------------------------------------#
 ## FUNCTIONS ##
-
+stopWords = list(stopwords.words('english'))
 def tok(text):
     text = "".join([c for c in text if c not in string.punctuation])
     text = ''.join([c for c in text if not c.isdigit()])
     tokens = nltk.word_tokenize(text)
-    return tokens
+    tokens2 = [x for x in tokens if x not in stopWords]
+    return tokens2
 
 
 def extractKeyphrases(train, test):
@@ -45,18 +47,21 @@ def extractKeyphrases(train, test):
 
 
 print "Getting training collection .."
-# Get relative path to documents
-currentPath = os.path.dirname(os.path.abspath(__file__)) + "\documents\\";
+# # Get relative path to documents
+# currentPath = os.path.dirname(os.path.abspath(__file__)) + "\documents\\";
+#
+# fileList = []
+# # Get all documents in "documents" directory into fileList
+# # Import documents into fileList
+# for fileX in os.listdir(currentPath):
+#     if fileX.endswith(".txt"):
+#         f = open(currentPath + fileX, 'r')
+#         content = f.read()
+#         fileList += [content]
+#         f.close()
 
-fileList = []
-# Get all documents in "documents" directory into fileList
-# Import documents into fileList
-for fileX in os.listdir(currentPath):
-    if fileX.endswith(".txt"):
-        f = open(currentPath + fileX, 'r')
-        content = f.read()
-        fileList += [content]
-        f.close()
+train = fetch_20newsgroups(subset='train')
+trainData = train.data[:200]
 
 print "Getting document .."
 #input doc that we want to extraxt keyphrases from
@@ -64,7 +69,7 @@ document = open("input.txt", 'r')
 doc = document.read()
 
 
-top5 = extractKeyphrases(fileList, doc)
+top5 = extractKeyphrases(trainData, doc)
 
 print "Top 5 Keyphrase Candidates"
 for word in top5:
