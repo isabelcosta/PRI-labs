@@ -41,7 +41,3 @@ for fileX in os.listdir(currentPath):
 # Use exercise-one to calculate top keyphrases to be associated with each document
 
 # Calculate precision, recall, F1 scores and mean average precision
-
-
-
-
