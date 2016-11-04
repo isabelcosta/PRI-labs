@@ -27,14 +27,13 @@ def tok(text):
 
 def extractKeyphrases(train, test):
 
-    print "Extracting keyphrases ... \n"
+    print "Extracting keyphrases ..."
     vectorizer = TfidfVectorizer(use_idf=False, ngram_range=(1,2), stop_words=list(stopwords.words('english')), tokenizer=tok)
     trainvec = vectorizer.fit_transform(train)
     testvec = vectorizer.transform(test)
 
-    print "tou lento"
+    print "Selecting 5 candidates for each document ..."
     previousDoc = 0
-
     feature_names = vectorizer.get_feature_names()
     scores = []
     docScores = {}
@@ -45,25 +44,23 @@ def extractKeyphrases(train, test):
         if previousDoc != doc:
 
             currentSortedScore = sorted(docScores.iteritems(), key=operator.itemgetter(1), reverse=True)[:5]
-            # print "Doc: " + str(previousDoc+1) + " " + str(currentSortedScore)
 
             scores += [currentSortedScore]
             docScores = {}
 
         previousDoc = doc
 
-
     currentSortedScore = sorted(docScores.iteritems(), key=operator.itemgetter(1), reverse=True)[:5]
-    # print "Doc: " + str(previousDoc+1) + " " + str(currentSortedScore)
+
     scores += [currentSortedScore]
 
-    top =[]
+    top = []
     for listT in scores:
-        topAux={}
+        topAux = {}
         for tuple in listT:
             topAux[tuple[0]] = tuple[1]
         top += [topAux]
-
+    print "Finished extraction!"
     return top
 
 def calc_precision(tp, fp):
@@ -79,8 +76,8 @@ def calc_f1(precision, recall):
 
 def calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases):
 
-    tp = sum(1 for key in knownKeyphrases if key in predictedKeyphrases)
-    # tp = sum(1 for key in predictedKeyphrases if key in knownKeyphrases)
+    # tp1 = sum(1 for key in knownKeyphrases if key in predictedKeyphrases)
+    tp = sum(1 for key in predictedKeyphrases if key in knownKeyphrases)
 
     fn = len(knownKeyphrases) - tp
     fp = len(predictedKeyphrases) - tp
@@ -99,6 +96,7 @@ def calc_mean_avg_precision(all_precisions):
     return mean_avg_precision
 
 '''  -------------------------   Global Variables   ---------------------------  '''
+
 # contains the list of all dataset, each element represents a document from the dataset
 # {docName => [content]}
 fileList = {}
@@ -122,27 +120,20 @@ datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\\documents\\";
 for docName in os.listdir(datasetPath):
     if docName.endswith(".txt"):
         f = open(datasetPath + docName, 'r')
-        # fileList[docName.partition(".txt")[0]] = f.read().decode("unicode_escape")
         fileList[docName.partition(".txt")[0]] = f.read()
-        # print fileList[docName.partition(".txt")[0]]
         f.close()
 
-# Get dataset and known keyphrases
 # Use exercise-one to calculate top keyphrases to be associated with each document
 calculatedKeyScores = extractKeyphrases(fileList.values(), fileList.values())
 
 print "Document: Precision, Recall, F1-score"
 
-# Get all documents in "documents" directory into fileList
-# Import documents into fileList
 nDocs = 0
 for docName in fileList:
-    docContent = ""
     docKeyphrases = []
-
     docContent = fileList[docName]
-    # Get all document's known keyphrases in "keys" directory into knownKeyphrases
-    # Import documents into fileList0
+
+    # Import documents key files content
     fKeys = open(datasetPath + docName + ".key", 'r')
     docKeyphrases = fKeys.read()
     fKeys.close()
@@ -150,8 +141,9 @@ for docName in fileList:
     knownKeyphrases = docKeyphrases.splitlines()
     knownKeyphrases = [x.decode("unicode_escape") for x in knownKeyphrases]
     predictedKeyphrases = calculatedKeyScores[nDocs].keys()
-    print knownKeyphrases
-    print predictedKeyphrases
+    # if docName == "J-50":
+    #     print knownKeyphrases
+    #     print predictedKeyphrases
 
     # Performance metrics - Calculate precision, recall, F1 scores and mean average precision
     allPrecisions += [calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases)[0]]
