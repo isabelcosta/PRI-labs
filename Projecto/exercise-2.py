@@ -32,6 +32,7 @@ def extractKeyphrases(train, test):
     trainvec = vectorizer.fit_transform(train)
     testvec = vectorizer.transform(test)
 
+    print "tou lento"
     previousDoc = 0
 
     feature_names = vectorizer.get_feature_names()
@@ -41,10 +42,10 @@ def extractKeyphrases(train, test):
     for doc, word in zip(row, columns):
 
         docScores[feature_names[word]] = str(testvec[doc, word])
-
         if previousDoc != doc:
+
             currentSortedScore = sorted(docScores.iteritems(), key=operator.itemgetter(1), reverse=True)[:5]
-            #print "Doc: " + str(previousDoc) + " " + str(currentSortedScore)
+            # print "Doc: " + str(previousDoc+1) + " " + str(currentSortedScore)
 
             scores += [currentSortedScore]
             docScores = {}
@@ -53,6 +54,7 @@ def extractKeyphrases(train, test):
 
 
     currentSortedScore = sorted(docScores.iteritems(), key=operator.itemgetter(1), reverse=True)[:5]
+    # print "Doc: " + str(previousDoc+1) + " " + str(currentSortedScore)
     scores += [currentSortedScore]
 
     top =[]
@@ -75,9 +77,11 @@ def calc_f1(precision, recall):
         return "N/A"
     return 2 * ((precision * recall) / (precision + recall))
 
-def calc_precision_recall_f1_score(knownKeyphrases, predictedKeyphrases):
+def calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases):
 
     tp = sum(1 for key in knownKeyphrases if key in predictedKeyphrases)
+    # tp = sum(1 for key in predictedKeyphrases if key in knownKeyphrases)
+
     fn = len(knownKeyphrases) - tp
     fp = len(predictedKeyphrases) - tp
 
@@ -86,7 +90,7 @@ def calc_precision_recall_f1_score(knownKeyphrases, predictedKeyphrases):
 
     f1_score = calc_f1(precision, recall)
 
-    print docFromDataset + ": " + str(precision) + ", " + str(recall) + ", " + str(f1_score)
+    print docName + ": " + str(precision) + ", " + str(recall) + ", " + str(f1_score)
     return precision, recall, f1_score
 
 def calc_mean_avg_precision(all_precisions):
@@ -110,49 +114,48 @@ allPrecisions = []
 
 ''' ------------------------- Exercise Execution ------------------------- '''
 
-print "Document: Precision, Recall, F1-score"
-
 # Get relative path to documents
-datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\documents\\";
+datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\\documents\\";
 
 # Get all documents in "documents" directory into fileList
 # Import documents into fileList
 for docName in os.listdir(datasetPath):
     if docName.endswith(".txt"):
         f = open(datasetPath + docName, 'r')
+        # fileList[docName.partition(".txt")[0]] = f.read().decode("unicode_escape")
         fileList[docName.partition(".txt")[0]] = f.read()
+        # print fileList[docName.partition(".txt")[0]]
         f.close()
 
 # Get dataset and known keyphrases
 # Use exercise-one to calculate top keyphrases to be associated with each document
 calculatedKeyScores = extractKeyphrases(fileList.values(), fileList.values())
 
+print "Document: Precision, Recall, F1-score"
+
 # Get all documents in "documents" directory into fileList
 # Import documents into fileList
 nDocs = 0
-for docFromDataset in os.listdir(datasetPath):
-    docContent = []
+for docName in fileList:
+    docContent = ""
     docKeyphrases = []
-    if docFromDataset.endswith(".txt"):
-        docName = docFromDataset.partition(".txt")[0]
-        fDoc = open(datasetPath + docFromDataset, 'r')
-        docContent = fDoc.read()
-        fDoc.close()
-        # Get all document's known keyphrases in "keys" directory into knownKeyphrases
-        # Import documents into fileList
-        for keyphraseFile in os.listdir(datasetPath):
-            if (keyphraseFile.endswith(".key") & (docName in str(keyphraseFile))):
-                fKeys = open(datasetPath + keyphraseFile, 'r')
-                docKeyphrases = fKeys.read()
-                fKeys.close()
 
-        knownKeyphrases = docKeyphrases.splitlines()
-        knownKeyphrases = [x.decode("unicode_escape") for x in knownKeyphrases]
-        predictedKeyphrases = calculatedKeyScores[nDocs].keys()
+    docContent = fileList[docName]
+    # Get all document's known keyphrases in "keys" directory into knownKeyphrases
+    # Import documents into fileList0
+    fKeys = open(datasetPath + docName + ".key", 'r')
+    docKeyphrases = fKeys.read()
+    fKeys.close()
 
-        # Performance metrics - Calculate precision, recall, F1 scores and mean average precision
-        allPrecisions += [calc_precision_recall_f1_score(knownKeyphrases, predictedKeyphrases)[0]]
+    knownKeyphrases = docKeyphrases.splitlines()
+    knownKeyphrases = [x.decode("unicode_escape") for x in knownKeyphrases]
+    predictedKeyphrases = calculatedKeyScores[nDocs].keys()
+    print knownKeyphrases
+    print predictedKeyphrases
 
-        nDocs += 1
+    # Performance metrics - Calculate precision, recall, F1 scores and mean average precision
+    allPrecisions += [calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases)[0]]
+
+    nDocs += 1
 
 calc_mean_avg_precision(allPrecisions)
