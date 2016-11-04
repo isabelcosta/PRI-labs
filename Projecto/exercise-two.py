@@ -1,117 +1,161 @@
 from __future__ import division, unicode_literals
-from sklearn.datasets import fetch_20newsgroups
-from textblob import TextBlob
-from nltk.corpus import stopwords
-from nltk import ngrams
-import math
-import operator
+from sklearn.feature_extraction.text import TfidfVectorizer
+import nltk
+import string
 import os
+import operator
+from nltk.corpus import stopwords
+
+'''
+The keyphrase extraction method should now be applied to documents from one of the datasets
+available at https://github.com/zelandiya/keyword-extraction-datasets.
+In this case, the IDF scores should be estimated with basis on the entire collection of documents,
+in the dataset of your choice, instead of relying on the 20 newsgroups collection.
+Using one of the aforementioned datasets, for which we know what are the most relevant
+keyphrases that should be associated to each document, your program should print the precision,
+recall, and F1 scores achieved by the simple extraction method. Your program should also print
+the mean average precision.
+'''
+
+'''     Functions           '''
+
+def tok(text):
+    text = "".join([c for c in text if c not in string.punctuation])
+    text = ''.join([c for c in text if not c.isdigit()])
+    tokens = nltk.word_tokenize(text)
+    return tokens
+
+def extractKeyphrases(train, test):
+
+    print "Extracting keyphrases ... \n"
+    vectorizer = TfidfVectorizer(use_idf=False, ngram_range=(1,2), stop_words=list(stopwords.words('english')), tokenizer=tok)
+    trainvec = vectorizer.fit_transform(train)
+    testvec = vectorizer.transform(test)
+
+    print "tou lento"
+    previousDoc = 0
+
+    feature_names = vectorizer.get_feature_names()
+    scores = []
+    docScores = {}
+    row, columns = testvec.nonzero()
+    for doc, word in zip(row, columns):
+
+        docScores[feature_names[word]] = str(testvec[doc, word])
+        if previousDoc != doc:
+
+            currentSortedScore = sorted(docScores.iteritems(), key=operator.itemgetter(1), reverse=True)[:5]
+            # print "Doc: " + str(previousDoc+1) + " " + str(currentSortedScore)
+
+            scores += [currentSortedScore]
+            docScores = {}
+
+        previousDoc = doc
 
 
+    currentSortedScore = sorted(docScores.iteritems(), key=operator.itemgetter(1), reverse=True)[:5]
+    # print "Doc: " + str(previousDoc+1) + " " + str(currentSortedScore)
+    scores += [currentSortedScore]
 
-# ---------------""" Functions for WORDS """--------------------- #
+    top =[]
+    for listT in scores:
+        topAux={}
+        for tuple in listT:
+            topAux[tuple[0]] = tuple[1]
+        top += [topAux]
 
-def tf(word, docContent):
-    # word -> candidate (string)
-    # docContent -> list of document words without stop words(list)
-    return docContent.count(word) / len(docContent)
+    return top
 
-def n_containing(word, documentList):
-    return sum(1 for docContent in documentList if word in docContent)
+def calc_precision(tp, fp):
+    return float(tp / (tp + fp))
 
-def idf(word, documentList):
-    return math.log((len(documentList) +1) / (1 + n_containing(word, documentList)))
+def calc_recall(tp, fn):
+    return float(tp / (tp + fn))
 
-def tfidf(word, docContent, documentList):
-    return tf(word, docContent) * idf(word, documentList)
+def calc_f1(precision, recall):
+    if precision == 0 and recall == 0:
+        return "N/A"
+    return 2 * ((precision * recall) / (precision + recall))
 
+def calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases):
 
+    tp = sum(1 for key in knownKeyphrases if key in predictedKeyphrases)
+    # tp = sum(1 for key in predictedKeyphrases if key in knownKeyphrases)
 
+    fn = len(knownKeyphrases) - tp
+    fp = len(predictedKeyphrases) - tp
+
+    precision = calc_precision(tp, fp)
+    recall = calc_recall(tp, fn)
+
+    f1_score = calc_f1(precision, recall)
+
+    print docName + ": " + str(precision) + ", " + str(recall) + ", " + str(f1_score)
+    return precision, recall, f1_score
+
+def calc_mean_avg_precision(all_precisions):
+    mean_avg_precision =  sum(all_precisions)/len(all_precisions)
+    print "Mean Average Precision: \t" + str(mean_avg_precision)
+    return mean_avg_precision
+
+'''  -------------------------   Global Variables   ---------------------------  '''
+# contains the list of all dataset, each element represents a document from the dataset
+# {docName => [content]}
+fileList = {}
+
+# {docName => [known keyphrases]}
+knownKeyphrases = []
+
+# {docName => [top keyphrases]}
+predictedKeyphrases = []
+
+# all precisions to be used in mean average precision
+allPrecisions = []
+
+''' ------------------------- Exercise Execution ------------------------- '''
 
 # Get relative path to documents
-currentPath = os.path.dirname(os.path.abspath(__file__)) + "\documents\\";
+datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\\documents\\";
 
-fileList = []
 # Get all documents in "documents" directory into fileList
 # Import documents into fileList
-for fileX in os.listdir(currentPath):
-    if fileX.endswith(".txt"):
-        f = open(currentPath + fileX, 'r')
-        content = f.read()
-        fileList += [content]
+for docName in os.listdir(datasetPath):
+    if docName.endswith(".txt"):
+        f = open(datasetPath + docName, 'r')
+        # fileList[docName.partition(".txt")[0]] = f.read().decode("unicode_escape")
+        fileList[docName.partition(".txt")[0]] = f.read()
+        # print fileList[docName.partition(".txt")[0]]
         f.close()
 
+# Get dataset and known keyphrases
+# Use exercise-one to calculate top keyphrases to be associated with each document
+calculatedKeyScores = extractKeyphrases(fileList.values(), fileList.values())
 
-f = open("candidates.txt", 'r')
-fileContent = f.read().decode('unicode_escape')
-f.close()
+print "Document: Precision, Recall, F1-score"
 
-stopWords = list(stopwords.words('english'))
+# Get all documents in "documents" directory into fileList
+# Import documents into fileList
+nDocs = 0
+for docName in fileList:
+    docContent = ""
+    docKeyphrases = []
 
-docContentBlob = TextBlob(fileContent)
-# remove stop words from each document
-# [word1, word2, ...] without stop words
-docWithoutStopWords = [x for x in docContentBlob.words if x not in stopWords]
+    docContent = fileList[docName]
+    # Get all document's known keyphrases in "keys" directory into knownKeyphrases
+    # Import documents into fileList0
+    fKeys = open(datasetPath + docName + ".key", 'r')
+    docKeyphrases = fKeys.read()
+    fKeys.close()
 
-# joins all words from a document separated by spaces, without the stopwords, to crate a TextBlob
-documentSentence = " ".join(docWithoutStopWords)
+    knownKeyphrases = docKeyphrases.splitlines()
+    knownKeyphrases = [x.decode("unicode_escape") for x in knownKeyphrases]
+    predictedKeyphrases = calculatedKeyScores[nDocs].keys()
+    print knownKeyphrases
+    print predictedKeyphrases
 
-# creates TextBlob of all words without stop words to get bi-grams
-docContentBlobWithoutStopWords = TextBlob(documentSentence)
+    # Performance metrics - Calculate precision, recall, F1 scores and mean average precision
+    allPrecisions += [calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases)[0]]
 
-# turn bi-grams WordList into strings separated by spaces
-documentBiGramList = []
-for word in docContentBlobWithoutStopWords.ngrams(n=2):
-    documentBiGramList += [" ".join(word)]
+    nDocs += 1
 
-# print documentBiGramList
-
-# joins all words and bi-grams from a document
-docFinalCandidates = docWithoutStopWords + documentBiGramList
-
-finalDocWordList = []
-finalDocList = []
-
-for trainDoc in fileList:
-    trainBlob = TextBlob(trainDoc.decode('utf-8'))
-    trainBlobWithoutStopWords = [x for x in trainBlob.words if x not in stopWords]
-    finalDocWordList += [trainBlobWithoutStopWords]
-
-finalDocList += finalDocWordList
-finalDocBigramList = []
-for num,trainDoc in enumerate(finalDocWordList):
-    docContentAux = []
-    DocBigramList = []
-    docContentAux = ngrams(trainDoc, 2)
-    for gram in docContentAux:
-        DocBigramList += [" ".join(list(gram))]
-    finalDocList[num] += DocBigramList
-
-
-docCandidatesScored = []
-
-
-#FIXME tf-idf for words seems to be working, WIP in bigrams
-#create dictionary with words/bi-grams and it's score
-for pos, trainDoc in enumerate(finalDocList):
-    # dictionary containing word/bi-grams and its scores of tf_idf{ word: tf_idf } for a certain document
-    keyphrasesDict = {}
-    # /// Create 2 diferent lists (words, bigrams) for each document and the candidates doc ////
-
-    print "\nDoc " + str(pos) + " ------------------------------\n"
-#    print "finalCandidates: " + str(docFinalCandidates)
-#    print " \n "
-
-    for word in docFinalCandidates:
-        #trainBlob = TextBlob(trainDoc.decode('utf-8'))
-        keyphrasesDict[word] = tfidf(word, trainDoc, finalDocList)
-#       print "Word: " + word + " ---- " + str(keyphrasesDict[word])
-
-    docCandidatesScored += [keyphrasesDict]
-
-print " \n "
-
-
-for doc,candidateScored in enumerate(docCandidatesScored):
-    print sorted(candidateScored.iteritems(), key=operator.itemgetter(1), reverse=True)[:5]
-    #print "Document " + str(doc) + " --- " + str(newdic) + "\n"
+calc_mean_avg_precision(allPrecisions)
