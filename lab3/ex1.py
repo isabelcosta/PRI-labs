@@ -23,10 +23,10 @@ classifier = MultinomialNB()
 classifier.fit(trainvec, train.target)
 classes = classifier.predict(testvec)
 
-print type(test.target)
-print type(classes)
-print test.target[:10]
-print classes[:10]
+# print type(test.target)
+# print type(classes)
+# print test.target[:10]
+# print classes[:10]
 from sklearn import metrics
 print metrics.accuracy_score(test.target, classes)
-# print metrics.classification_report(test.target, classes)
+print metrics.classification_report(test.target, classes)
