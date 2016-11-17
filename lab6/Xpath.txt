@@ -1,0 +1,8 @@
+//Airport/name
+
+//Flight[3]/destination
+
+//Flight[destination = "ZRH" or destination = "PRG"]/departure
+
+//Flight[source = "LHR"] not sure
+
