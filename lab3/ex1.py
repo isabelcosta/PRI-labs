@@ -14,9 +14,9 @@ testvec = vectorizer.transform(test.data)
 # print "-------------vectorizer---------------"
 # print vectorizer
 # print "-------------trainvec---------------"
-# print trainvec
+print trainvec
 # print "-------------testvec---------------"
-# print testvec
+print testvec
 
 from sklearn.naive_bayes import MultinomialNB
 classifier = MultinomialNB()
