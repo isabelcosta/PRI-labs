@@ -1,12 +1,9 @@
-from urllib2 import urlopen
-import urlparse
-import re
-from bs4 import BeautifulSoup
-import robotparser
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
 from nltk import ngrams
 import string
+from lxml import etree
+
 
 stopWords = list(stopwords.words('english'))
 
@@ -47,29 +44,29 @@ def tok_sent(text):
 
 ###################################################################
 
-# http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml
+content = []
 
-response = urlopen("http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml")
-parsed_html = BeautifulSoup(response, "lxml")
-print parsed_html.prettify()
+root = etree.parse("nytAmericas.xml")
+for title in root.xpath('//title'):
+    # print title.text
+    if title.text != None:
+        content.append(title.text.encode('ascii', 'ignore'))
 
-content = ""
+for description in root.xpath('//description'):
+    # print description.text
+    if description.text != None:
+        content.append(description.text.encode('ascii', 'ignore'))
 
-print "\n\nTITLES\n"
-
-for title in parsed_html.find_all("title"):
-    content += title.text + " "
+content = ' '.join(content)
+# print content
 
 
-print "\n\nDISCRIPTIONS\n"
-
-for description in parsed_html.find_all("description"):
-    content += description.text + " "
+# print  "\n\n\n"
 
 
 print "\nFiltering document sentences ... "
 sentenceList = tok_sent(content)
-# print sentList
+# print sentenceList
 
 
 
@@ -84,7 +81,7 @@ candidates = ngrams(content)
 
 print "\nCreating graph ... "
 
-graph2 = {}
+graph = {}
 
 for i, ngram in enumerate(candidates):
     elementList = []
@@ -94,9 +91,9 @@ for i, ngram in enumerate(candidates):
                 if sentence.count(ngram2) != 0 and ngram2 != ngram and ngram2 not in elementList:
                     elementList += [ngram2]
 
-    graph2[ngram] = elementList
+    graph[ngram] = elementList
 
-for element in graph2:
+for element in graph:
     print element
-    print graph2[element]
+    print graph[element]
 
