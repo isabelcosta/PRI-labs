@@ -1,29 +1,17 @@
 #from __future__ import unicode_literals
 from __future__ import division
 from sklearn.datasets import fetch_20newsgroups
-from sklearn.feature_extraction.text import TfidfVectorizer
-import nltk
 import string
 from nltk.corpus import stopwords
-from nltk.tokenize import sent_tokenize, word_tokenize
-from math import log
+from nltk.tokenize import sent_tokenize
 from nltk import ngrams
-import itertools
-import re
+
 import operator
 
 
 stopWords = list(stopwords.words('english'))
 
-# def word_grams(words):
-#     s = []
-#     s += words
-#     for tuple in ngrams(words, 2):
-#         s.append(tuple)
-#     for tuple in ngrams(words, 3):
-#         s.append(tuple)
-#
-#     return s
+
 
 def wordToNgrams(text, n, exact=True):
     return [" ".join(j) for j in zip(*[text[i:] for i in range(n)])]
@@ -58,6 +46,25 @@ def tok_sent(text):
 
     return sentenceList
 
+def pagerank(graph, d, numloops):
+
+    ranks = {}
+    npages = len(graph)
+    for page in graph:
+        ranks[page] = 1.0 / npages
+
+    for i in range(0, numloops):
+        # print i
+        newranks = {}
+        for page in graph:
+            newrank = d / npages
+            for node in graph:
+                if page in graph[node]:
+                    newrank = newrank + (1 - d) * (ranks[node] / len(graph[node]))
+            newranks[page] = newrank
+        ranks = newranks
+    return ranks
+
 def extractKeyphrases(text):
 
 
@@ -78,28 +85,47 @@ def extractKeyphrases(text):
     print "\nCreating graph ... "
 
     graph = {}
+    graph2 = {}
 
-    for ngram in candidates:
+    # for ngram in candidates[:15]:
+    #     elementList = []
+    #     for sentence in sentenceList:
+    #         elementList.append(sentence.count(ngram))
+    #     graph[ngram] = elementList
+    #
+    # for element in graph:
+    #     print element
+    #     print graph[element]
+
+    ### CASO O GRAPH NAO ESTEJA BEM FEITO ###
+
+    for i, ngram in enumerate(candidates):
         elementList = []
-        for sentence in sentenceList:
-            # print sentence
-            # print ngram
-            # print str(sentence.count(ngram)) + "\n"
-            elementList.append(sentence.count(ngram))
-        graph[ngram] = elementList
+        for n, sentence in enumerate(sentenceList):
+            if sentence.count(ngram) != 0:
+                for ngram2 in candidates:
+                    if sentence.count(ngram2) != 0 and ngram2 != ngram and ngram2 not in elementList:
+                        elementList += [ngram2]
 
-    for element in graph:
+
+
+        graph2[ngram] = elementList
+
+    for element in graph2:
         print element
-        print graph[element]
+        print graph2[element]
 
+    print "\nCalculating Pagerank ... "
 
+    pagerankDic = pagerank(graph2,0.15,50)
 
+    pagerankDicTop5 = dict(sorted(pagerankDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
 
+    print "\nPagerank Top 5:\n "
 
-
-
-
-
+    for ngram in pagerankDicTop5:
+        print ngram
+        print pagerankDicTop5[ngram]
 
 
 # --------------------------------------------------------------------#

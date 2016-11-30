@@ -150,8 +150,10 @@ for docName in fileList:
     knownKeyphrases = docKeyphrases.splitlines()
     knownKeyphrases = [x.decode("unicode_escape") for x in knownKeyphrases]
     predictedKeyphrases = calculatedKeyScores[nDocs].keys()
-    print knownKeyphrases
-    print predictedKeyphrases
+    # print knownKeyphrases
+    # print predictedKeyphrases
+
+
 
     # Performance metrics - Calculate precision, recall, F1 scores and mean average precision
     allPrecisions += [calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases)[0]]

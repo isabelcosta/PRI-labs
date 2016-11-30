@@ -22,4 +22,4 @@ graph = {'A': ['B', 'D'],
          'C': ['D'],
          'D': []}
 
-print pagerank(graph, 0.1, 10)
+print pagerank(graph, 0.1, 50)
