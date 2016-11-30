@@ -53,8 +53,8 @@ def pagerank(graph, d, numloops):
     for page in graph:
         ranks[page] = 1.0 / npages
 
-    for i in range(0, numloops):
-        # print i
+    for loop in range(0, numloops):
+        # print loop
         newranks = {}
         for page in graph:
             newrank = d / npages
@@ -97,7 +97,7 @@ def extractKeyphrases(text):
     #     print element
     #     print graph[element]
 
-    ### CASO O GRAPH NAO ESTEJA BEM FEITO ###
+    ### CREATE GRAPH ###
 
     for i, ngram in enumerate(candidates):
         elementList = []
