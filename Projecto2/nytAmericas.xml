@@ -1,0 +1,454 @@
+<?xml version="1.0"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:nyt="http://www.nytimes.com/namespaces/rss/2.0" version="2.0">
+  <channel>
+    <title>NYT &gt; Americas</title>
+    <link>http://www.nytimes.com/pages/world/americas/index.html?partner=rss&amp;emc=rss</link>
+    <atom:link rel="self" type="application/rss+xml" href="http://www.nytimes.com/services/xml/rss/nyt/Americas.xml"/>
+    <description/>
+    <language>en-us</language>
+    <copyright>Copyright 2016  The New York Times Company</copyright>
+    <lastBuildDate>Tue, 29 Nov 2016 22:05:53 GMT </lastBuildDate>
+    <image>
+      <title>NYT &gt; Americas</title>
+      <url>https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png</url>
+      <link>http://www.nytimes.com/pages/world/americas/index.html?partner=rss&amp;emc=rss</link>
+    </image>
+    <item>
+      <title>One Family. Six Decades. Myriad Views of Fidel Castro&#x2019;s Revolution.</title>
+      <link>http://www.nytimes.com/2016/11/27/world/americas/fidel-castro-revolution-50-years-three-generations-one-family.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/27/world/americas/fidel-castro-revolution-50-years-three-generations-one-family.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/27/world/americas/fidel-castro-revolution-50-years-three-generations-one-family.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/28/world/generations1/generations1-moth-v3.jpg" medium="image" height="151" width="151"/>
+      <media:description>Fidel Castro after arriving in Havana on Jan. 8, 1959. Mr. Castro&#x2019;s revolution was welcomed by Cubans like Juan Montes Torre, a poor laborer at the time. &#x201C;It was an emotional shock,&#x201D; Mr. Montes recalled. &#x201C;These bearded men, poorly dressed &#x2014; they won! And on behalf of the lower classes!&#x201D;</media:description>
+      <media:credit>Associated Press</media:credit>
+      <description>The clash of emotions common in Cuban families is reflected in a grandfather&#x2019;s loyalty to Mr. Castro and a granddaughter&#x2019;s glum view of conditions in her country.</description>
+      <dc:creator>DAMIEN CAVE</dc:creator>
+      <pubDate>Sun, 27 Nov 2016 10:00:23 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Economic Conditions and Trends</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Families and Family Life</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Shortages</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Income Inequality</category>
+    </item>
+    <item>
+      <title>Donald Trump&#x2019;s Threat to Close Door Reopens Old Wounds in Cuba</title>
+      <link>http://www.nytimes.com/2016/11/28/us/politics/cuba-trump-obama.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/28/us/politics/cuba-trump-obama.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/28/us/politics/cuba-trump-obama.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/29/us/29cubatrump1/29cubatrump1-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>President Obama met with the Cuban president, Ra&#xFA;l Castro, in Havana in March.</media:description>
+      <media:credit>Stephen Crowley/The New York Times</media:credit>
+      <description>In a post on Twitter, he said he would &#x201C;terminate&#x201D; the pact President Obama made if Cuba is unwilling to make &#x201C;a better deal for the Cuban people.&#x201D;</description>
+      <dc:creator>DAMIEN CAVE, AZAM AHMED and JULIE HIRSCHFELD DAVIS</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 02:11:33 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Trump, Donald J</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Raul</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Obama, Barack</category>
+    </item>
+    <item>
+      <title>Subdued Cuba Prepares Memorial for Castro</title>
+      <link>http://www.nytimes.com/2016/11/27/world/americas/subdued-cuba-prepares-memorial-for-castro.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/27/world/americas/subdued-cuba-prepares-memorial-for-castro.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/27/world/americas/subdued-cuba-prepares-memorial-for-castro.html?partner=rss&amp;emc=rss"/>
+      <description>A two-day memorial and a period of &#x201C;Duelo Nacional,&#x201D; or national mourning, will offer Cubans a chance to pay their respects to the longtime leader.</description>
+      <dc:creator>DAMIEN CAVE</dc:creator>
+      <pubDate>Sun, 27 Nov 2016 14:50:30 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Havana (Cuba)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Latin America</category>
+    </item>
+    <item>
+      <title>Op-Ed Contributor: The Little Fidel in All of Us</title>
+      <link>http://www.nytimes.com/2016/11/27/opinion/the-little-fidel-in-all-of-us.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/27/opinion/the-little-fidel-in-all-of-us.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/27/opinion/the-little-fidel-in-all-of-us.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/28/opinion/28obejasWeb/28obejasWeb-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>People in Miami reacting to the news of the death of Fidel Castro.</media:description>
+      <media:credit>Scott McIntyre for The New York Times</media:credit>
+      <description>Who would any of us be if he hadn&#x2019;t rearranged our destinies and caused this rupture in our lives?</description>
+      <dc:creator>ACHY OBEJAS</dc:creator>
+      <pubDate>Sun, 27 Nov 2016 23:54:21 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+    </item>
+    <item>
+      <title>Fidel Castro, Cuban Revolutionary Who Defied U.S., Dies at 90</title>
+      <link>http://www.nytimes.com/2016/11/26/world/americas/fidel-castro-dies.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/26/world/americas/fidel-castro-dies.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/26/world/americas/fidel-castro-dies.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2015/06/20/world/Fidel-Castro-obituary-slide-P9CB/Fidel-Castro-obituary-slide-P9CB-moth-v3.jpg" medium="image" height="151" width="151"/>
+      <media:description>Fidel Castro was seen as a ruthless despot by some and hailed as a revolutionary hero by others.</media:description>
+      <media:credit>Jack Manning/The New York Times</media:credit>
+      <description>Mr. Castro brought the Cold War to the Western Hemisphere, bedeviled 11 American presidents and briefly pushed the world to the brink of nuclear war.</description>
+      <dc:creator>ANTHONY DePALMA</dc:creator>
+      <pubDate>Sat, 26 Nov 2016 05:59:13 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Deaths (Obituaries)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+    </item>
+    <item>
+      <title>Obama to Send Aide to Fidel Castro&#x2019;s Funeral</title>
+      <link>http://www.nytimes.com/2016/11/29/world/americas/obama-fidel-castro-funeral-cuba.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/29/world/americas/obama-fidel-castro-funeral-cuba.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/29/world/americas/obama-fidel-castro-funeral-cuba.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/30/world/30prexey1/30prexey1-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Benjamin J. Rhodes, center, a deputy national security adviser to President Obama, in Buenos Aires in March. He will attend the funeral for Fidel Castro in Cuba.</media:description>
+      <media:credit>Stephen Crowley/The New York Times</media:credit>
+      <description>Benjamin J. Rhodes, a deputy national security adviser, will join the top American diplomat in Cuba at the funeral, an official said, citing the countries&#x2019; &#x201C;complicated&#x201D; relationship.</description>
+      <dc:creator>GARDINER HARRIS</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 20:57:34 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Funerals and Memorials</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Rhodes, Benjamin J</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">DeLaurentis, Jeffrey F (1954- )</category>
+    </item>
+    <item>
+      <title>Brazil&#x2019;s Chapecoense Soccer Team Devastated as Plane Crash Kills Dozens</title>
+      <link>http://www.nytimes.com/2016/11/29/world/americas/plane-carrying-brazilian-soccer-team-crashes-in-colombia.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/29/world/americas/plane-carrying-brazilian-soccer-team-crashes-in-colombia.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/29/world/americas/plane-carrying-brazilian-soccer-team-crashes-in-colombia.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/30/world/30Colombia4/30Colombia4-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Rescue workers removing bodies of victims at the site of a plane crash on the outskirts of Medell&#xED;n, Colombia, on Tuesday.</media:description>
+      <media:credit>Luis Benavides/Associated Press</media:credit>
+      <description>Few survivors have been found among the 77 people on the chartered flight taking the team to a game in Medell&#xED;n. The tragedy came as fans across Brazil had been reveling in the team&#x2019;s performance.</description>
+      <dc:creator>SIMON ROMERO and NICHOLAS CASEY</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 20:42:28 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Aviation Accidents, Safety and Disasters</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Soccer</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Colombia</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Medellin (Colombia)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Deaths (Fatalities)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Chapecoense de Brasil (Soccer Team)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">LaMia Airlines</category>
+    </item>
+    <item>
+      <title>A History of Air Disasters Involving Sports Teams</title>
+      <link>http://www.nytimes.com/2016/11/29/world/americas/plane-crashes-sports-teams.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/29/world/americas/plane-crashes-sports-teams.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/29/world/americas/plane-crashes-sports-teams.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/30/world/30Colombialisty-Span/30Colombialisty-Span-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Rescue workers removing bodies of victims at the site of a plane crash on the outskirts of Medell&#xED;n, Colombia, on Tuesday.</media:description>
+      <media:credit>Luis Benavides/Associated Press</media:credit>
+      <description>The crash of a plane carrying the Brazilian soccer club Chapecoense to a game in Colombia is one of several similar accidents stretching back decades.</description>
+      <dc:creator>DAN BILEFSKY</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 15:27:03 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Aviation Accidents, Safety and Disasters</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Manchester United (Soccer Team)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">University of Evansville</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Lokomotiv Yaroslavl</category>
+    </item>
+    <item>
+      <title>Women in Canadian Military Report Widespread Sexual Assault</title>
+      <link>http://www.nytimes.com/2016/11/28/world/canada/canada-military-women-sexual-assault.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/28/world/canada/canada-military-women-sexual-assault.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/28/world/canada/canada-military-women-sexual-assault.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/29/world/29canada/29canada-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Gen. Jonathan Vance, chief of the Canadian defense staff, speaking on Monday about a report showing that more than a quarter of women in the Canadian military have been sexually assaulted during their careers.</media:description>
+      <media:credit>Chris Wattie/Reuters</media:credit>
+      <description>A survey commissioned by the armed forces puts hard numbers on a 2015 report that showed a culture hostile toward women and other minorities.</description>
+      <dc:creator>IAN AUSTEN</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 01:15:28 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Canada</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Defense and Military Forces</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Sexual Harassment</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Sex Crimes</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Statistics Canada</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Women and Girls</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Canadian Armed Forces</category>
+    </item>
+    <item>
+      <title>The Interpreter: How Stable Are Democracies? &#x2018;Warning Signs Are Flashing Red&#x2019;</title>
+      <link>http://www.nytimes.com/2016/11/29/world/americas/western-liberal-democracy.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/29/world/americas/western-liberal-democracy.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/29/world/americas/western-liberal-democracy.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/29/world/29int-mounk/29int-mounk-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Yascha Mounk, a Harvard lecturer.</media:description>
+      <media:credit/>
+      <description>New research tries to spot the collapse of liberal democracies before they happen, and it suggests that Western democracy may be seriously ill.</description>
+      <dc:creator>AMANDA TAUB</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 05:00:24 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">United States</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Venezuela</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Poland</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Eastern Europe</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Democracy (Theory and Philosophy)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Freedom House</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Journal of Democracy</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Trump, Donald J</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Chavez, Hugo</category>
+    </item>
+    <item>
+      <title>Can Oil Help Mexico Withstand Trump&#x2019;s Attack on Trade? It&#x2019;s Hard to See How</title>
+      <link>http://www.nytimes.com/2016/11/27/world/americas/mexico-oil-pemex-donald-trump.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/27/world/americas/mexico-oil-pemex-donald-trump.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/27/world/americas/mexico-oil-pemex-donald-trump.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/28/world/28MEXICO1/28MEXICO1-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>The Pemex Miguel Hidalgo refinery in Tula de Allende, in the state of Hidalgo, north of Mexico City.</media:description>
+      <media:credit>Janet Jarman for The New York Times</media:credit>
+      <description>The country&#x2019;s state-owned oil company, Pemex, is saddled with debt and struggling with production. As a Donald J. Trump presidency looms, fixing it is a top priority.</description>
+      <dc:creator>ELISABETH MALKIN</dc:creator>
+      <pubDate>Mon, 28 Nov 2016 01:23:39 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Mexico</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Oil (Petroleum) and Gasoline</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Pemex</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Pena Nieto, Enrique</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Trump, Donald J</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">International Trade and World Market</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">United States Politics and Government</category>
+    </item>
+    <item>
+      <title>Justin Trudeau Criticized for Praising Fidel Castro as &#x2018;Remarkable Leader&#x2019;</title>
+      <link>http://www.nytimes.com/2016/11/26/world/americas/justin-trudeau-fidel-castro.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/26/world/americas/justin-trudeau-fidel-castro.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/26/world/americas/justin-trudeau-fidel-castro.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/27/world/27xp-trudeau_web1/27xp-trudeau_web1-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Prime Minister Justin Trudeau of Canada on Saturday at a summit meeting in Antananarivo, Madagascar.</media:description>
+      <media:credit>Adrian Wyld/The Canadian Press, via Associated Press..</media:credit>
+      <description>The Canadian prime minister&#x2019;s statement on the Cuban leader&#x2019;s death was condemned by political observers in both the United States and Canada.</description>
+      <dc:creator>LIAM STACK</dc:creator>
+      <pubDate>Sat, 26 Nov 2016 23:58:24 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Trudeau, Justin</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Trudeau, Pierre Elliott</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Canada</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+    </item>
+    <item>
+      <title>With One Castro Gone, Questions About What the Other Castro Will Do</title>
+      <link>http://www.nytimes.com/2016/11/26/world/americas/fidel-castro-death-raul-castro-cuba.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/26/world/americas/fidel-castro-death-raul-castro-cuba.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/26/world/americas/fidel-castro-death-raul-castro-cuba.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/27/world/americas/27succession/27succession-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Ra&#xFA;l Castro in Havana on Nov. 24. Mr. Castro assumed presidential powers in 2006 before getting the official title in 2008.</media:description>
+      <media:credit>Ernesto Mastrascusa/European Pressphoto Agency</media:credit>
+      <description>Fidel Castro&#x2019;s death comes at a time of great uncertainty for Cuba, and about how Ra&#xFA;l Castro will steer the country.</description>
+      <dc:creator>VICTORIA BURNETT, RANDAL C. ARCHIBOLD and FRANCES ROBLES</dc:creator>
+      <pubDate>Sat, 26 Nov 2016 12:20:53 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Raul</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">International Relations</category>
+    </item>
+    <item>
+      <title>The Saturday Profile: Opera Maestro Ensnared in Brazilian Graft Scandal Lashes Out at Accusers</title>
+      <link>http://www.nytimes.com/2016/11/25/world/americas/brazil-corruption-scandal-john-neschling.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/25/world/americas/brazil-corruption-scandal-john-neschling.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/25/world/americas/brazil-corruption-scandal-john-neschling.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/26/world/26Neschling/26Neschling-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>The Brazilian conductor and artistic director John Neschling, left, with two of his advisers in S&#xE3;o Paulo. He says lawbreakers are smearing him to get leniency through plea deals.</media:description>
+      <media:credit>Mauricio Lima for The New York Times</media:credit>
+      <description>Using the court of public opinion, John Neschling, who has not been charged with a crime, questions whether Brazil&#x2019;s graft fight also entangles the innocent.</description>
+      <dc:creator>SIMON ROMERO</dc:creator>
+      <pubDate>Fri, 25 Nov 2016 14:30:02 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Neschling, John (1947- )</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Theatro Municipal (Sao Paulo, Brazil)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Opera</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Corruption (Institutional)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Embezzlement</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Bribery and Kickbacks</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Classical Music</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Brazil</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Music</category>
+    </item>
+    <item>
+      <title>Hungry Venezuelans Flee in Boats to Escape Economic Collapse</title>
+      <link>http://www.nytimes.com/2016/11/25/world/americas/hungry-venezuelans-flee-in-boats-to-escape-economic-collapse.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/25/world/americas/hungry-venezuelans-flee-in-boats-to-escape-economic-collapse.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/25/world/americas/hungry-venezuelans-flee-in-boats-to-escape-economic-collapse.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/25/world/americas/26VENEZ-1/26VENEZ-slide-Q1NZ-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Migrants preparing to board the smugglers&#x2019; boats that will take them from Venezuela to Cura&#xE7;ao.</media:description>
+      <media:credit>Meridith Kohut for The New York Times</media:credit>
+      <description>Well over 150,000 people have fled Venezuela in the last year alone, the most in more than a decade, scholars say, with the sea route posing special dangers.</description>
+      <dc:creator>NICHOLAS CASEY</dc:creator>
+      <pubDate>Fri, 25 Nov 2016 22:23:44 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">vis-photo</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Venezuela</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Economic Conditions and Trends</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Refugees and Displaced Persons</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Chavez, Hugo</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Food</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Caribbean Area</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Curacao</category>
+    </item>
+    <item>
+      <title>Brazil&#x2019;s President, Michel Temer, Embroiled in New Corruption Scandal</title>
+      <link>http://www.nytimes.com/2016/11/25/world/americas/brazil-president-temer-corruption.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/25/world/americas/brazil-president-temer-corruption.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/25/world/americas/brazil-president-temer-corruption.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/26/world/26Brazil/26Brazil-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>President Michel Temer in Bras&#xED;lia in October. He rose to power six months ago after the impeachment of his predecessor, Dilma Rousseff.</media:description>
+      <media:credit>Andressa Anholete/Agence France-Presse &#x2014; Getty Images</media:credit>
+      <description>Marcelo Calero, a former culture minister, said Mr. Temer had pressured him on behalf of a top ally. Critics are demanding the president&#x2019;s impeachment.</description>
+      <dc:creator>SIMON ROMERO</dc:creator>
+      <pubDate>Fri, 25 Nov 2016 12:41:46 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Corruption (Institutional)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Brazilian Democratic Movement Party</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Lima, Geddel Vieira</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Temer, Michel (1940- )</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Brazil</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Calero, Marcelo</category>
+    </item>
+    <item>
+      <title>Canada Today: Algae Blooms, Fighter Jets and Fund-Raising Trouble</title>
+      <link>http://www.nytimes.com/2016/11/25/world/canada/canada-today-algae-blooms-fighter-jets-and-fund-raising-trouble.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/25/world/canada/canada-today-algae-blooms-fighter-jets-and-fund-raising-trouble.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/25/world/canada/canada-today-algae-blooms-fighter-jets-and-fund-raising-trouble.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/26/world/26CANADATODAY/26CANADATODAY-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Prime Minister Justin Trudeau of Canada held a press conference at the Asia-Pacific Economic Cooperation Summit in Lima, Peru, last week.</media:description>
+      <media:credit>Guadalupe Pardo/Reuters</media:credit>
+      <description>He toughened guidelines on donations, but Justin Trudeau still finds himself drawn into a debate about Liberal Party gatherings with donors.</description>
+      <dc:creator>IAN AUSTEN</dc:creator>
+      <pubDate>Fri, 25 Nov 2016 21:03:26 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Canada</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Trudeau, Justin</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Campaign Finance</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Ethics and Official Misconduct</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Liberal Party (Canada)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Algae</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Military Aircraft</category>
+    </item>
+    <item>
+      <title>Bernardo &#xC1;lvarez, Hugo Ch&#xE1;vez&#x2019;s Envoy in Washington, Dies at 60</title>
+      <link>http://www.nytimes.com/2016/11/25/world/americas/bernardo-alvarez-herrera-dead.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/25/world/americas/bernardo-alvarez-herrera-dead.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/25/world/americas/bernardo-alvarez-herrera-dead.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/26/world/26alvarez-obit/26alvarez-obit-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Bernardo &#xC1;lvarez Herrera, who was seen as a pragmatist, served as ambassador to the United States from 2003 to 2010.</media:description>
+      <media:credit>Carol T. Powers for The New York Times</media:credit>
+      <description>American officials saw Mr. &#xC1;lvarez, Venezuela&#x2019;s ambassador from 2003 to 2010, as a pragmatist who prevented ties between the countries from fraying further.</description>
+      <dc:creator>THE ASSOCIATED PRESS</dc:creator>
+      <pubDate>Sat, 26 Nov 2016 02:17:37 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Alvarez Herrera, Bernardo (1956-2016)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Deaths (Obituaries)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Diplomatic Service, Embassies and Consulates</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Venezuela</category>
+    </item>
+    <item>
+      <title>Colombia and FARC Sign New Peace Deal, This Time Skipping Voters</title>
+      <link>http://www.nytimes.com/2016/11/24/world/americas/colombia-juan-manuel-santos-peace-deal-farc.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/24/world/americas/colombia-juan-manuel-santos-peace-deal-farc.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/24/world/americas/colombia-juan-manuel-santos-peace-deal-farc.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/25/world/25colombia/25colombia-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>President Juan Manuel Santos of Colombia, left, and Rodrigo Londo&#xF1;o, the top rebel commander, at the signing of a peace agreement between the Colombian government and the Revolutionary Armed Forces of Colombia, or FARC, in Bogot&#xE1; on Thursday.</media:description>
+      <media:credit>Luis Robayo/Agence France-Presse &#x2014; Getty Images</media:credit>
+      <description>After a previous deal was rejected last month in a referendum, the president signed modified accords that will instead go to Congress, which his governing coalition controls.</description>
+      <dc:creator>NICHOLAS CASEY</dc:creator>
+      <pubDate>Thu, 24 Nov 2016 21:11:57 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Colombia</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Revolutionary Armed Forces of Colombia</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Santos, Juan Manuel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Bogota (Colombia)</category>
+    </item>
+    <item>
+      <title>Justin Trudeau Faces Criticism Over Fund-Raisers in Canada</title>
+      <link>http://www.nytimes.com/2016/11/24/world/americas/canada-justin-trudeau-donors.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/24/world/americas/canada-justin-trudeau-donors.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/24/world/americas/canada-justin-trudeau-donors.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/25/world/CANADA/CANADA-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Prime Minister Justin Trudeau speaking to the House of Commons on Tuesday. He has said no rules have been broken.</media:description>
+      <media:credit>Chris Wattie/Reuters</media:credit>
+      <description>A series of articles in a Toronto newspaper have raised questions of whether donors get privileged access to members of Mr. Trudeau&#x2019;s cabinet.</description>
+      <dc:creator>IAN AUSTEN</dc:creator>
+      <pubDate>Fri, 25 Nov 2016 00:09:10 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Politics and Government</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Conflicts of Interest</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Legislatures and Parliaments</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Ethics and Official Misconduct</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Conservative Party (Canada)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Liberal Party (Canada)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Trudeau, Justin</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Canada</category>
+    </item>
+    <item>
+      <title>Frida Kahlo, Whose Self-Portraits Spoke to the Soul</title>
+      <link>http://www.nytimes.com/interactive/projects/cp/obituaries/archives/frida-kahlo?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/interactive/projects/cp/obituaries/archives/frida-kahlo</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/interactive/projects/cp/obituaries/archives/frida-kahlo?partner=rss&amp;emc=rss"/>
+      <description>She defined herself by her painting, especially when she painted herself. Revisit the life of Kahlo who died 62 years ago.</description>
+      <dc:creator>TAMARA BEST</dc:creator>
+      <pubDate>Tue, 12 Jul 2016 22:26:06 GMT</pubDate>
+    </item>
+    <item>
+      <title>Feature: The End of the Anglo-American Order</title>
+      <link>http://www.nytimes.com/2016/11/29/magazine/the-end-of-the-anglo-american-order.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/29/magazine/the-end-of-the-anglo-american-order.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/29/magazine/the-end-of-the-anglo-american-order.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/12/04/magazine/04exceptionalism4/04exceptionalism4-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description/>
+      <media:credit>Photo illustration by Maurizio Cattelan and Pierpaolo Ferrari. Map: Rand McNally.</media:credit>
+      <description>For decades, the United States and Britain&#x2019;s vision of democracy and freedom defined the postwar world. What will happen in an age of Donald Trump and Nigel Farage?</description>
+      <dc:creator>IAN BURUMA</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 10:00:17 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Great Britain Withdrawal from EU (Brexit)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">United States International Relations</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Farage, Nigel (1964- )</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Trump, Donald J</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Capitalism (Theory and Philosophy)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">New Deal (1930's)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">Democracy (Theory and Philosophy)</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Thatcher, Margaret H</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Reagan, Ronald Wilson</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">England</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">United States</category>
+    </item>
+    <item>
+      <title>First Words: Is &#x2018;Empathy&#x2019; Really What the Nation Needs?</title>
+      <link>http://www.nytimes.com/2016/11/29/magazine/is-empathy-really-what-the-nation-needs.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/29/magazine/is-empathy-really-what-the-nation-needs.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/29/magazine/is-empathy-really-what-the-nation-needs.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/12/04/magazine/04firstwords/04mag-04firstwords-t_CA0-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description/>
+      <media:credit>Illustration by Javier Ja&#xE9;n</media:credit>
+      <description>From media pundits to tech companies, more and more people are preaching empathy &#x2014; as long as it serves their own interests.</description>
+      <dc:creator>AMANDA HESS</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 10:00:01 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Empathy</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Social Media</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Zuckerberg, Mark E</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/mdes">English Language</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Computers and the Internet</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_org_all">Facebook Inc</category>
+    </item>
+    <item>
+      <title>Op-Ed Contributor: The Dream of a Free Cuba</title>
+      <link>http://www.nytimes.com/2016/11/29/opinion/the-dream-of-a-free-cuba.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/2016/11/29/opinion/the-dream-of-a-free-cuba.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/2016/11/29/opinion/the-dream-of-a-free-cuba.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2016/11/28/opinion/sunday/30GODINEZ2-inyt/30GODINEZ2-inyt-moth.jpg" medium="image" height="151" width="151"/>
+      <media:description>Watching President Obama deliver a speech during a visit to Havana in March.</media:description>
+      <media:credit>Ivan Alvarado/Reuters</media:credit>
+      <description>The trade embargo has failed. What Cubans eager for the end of the Castro regime want is for the U.S. Congress to vote it down.</description>
+      <dc:creator>HENRY GODINEZ</dc:creator>
+      <pubDate>Tue, 29 Nov 2016 09:59:45 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Embargoes and Sanctions</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">United States International Relations</category>
+    </item>
+    <item>
+      <title>Fidel Castro, Cuban Revolutionary</title>
+      <link>http://www.nytimes.com/slideshow/2016/11/26/world/americas/fidel-castro-cuban-revolutionary.html?partner=rss&amp;emc=rss</link>
+      <guid isPermaLink="true">http://www.nytimes.com/slideshow/2016/11/26/world/americas/fidel-castro-cuban-revolutionary.html</guid>
+      <atom:link rel="standout" href="http://www.nytimes.com/slideshow/2016/11/26/world/americas/fidel-castro-cuban-revolutionary.html?partner=rss&amp;emc=rss"/>
+      <media:content url="https://static01.nyt.com/images/2015/06/20/world/Fidel-Castro-obituary-slide-HTON/Fidel-Castro-obituary-slide-HTON-thumbStandard.jpg" medium="image" height="75" width="75"/>
+      <media:description/>
+      <media:credit/>
+      <description>Mr. Castro was seen as a ruthless despot by some and hailed as a hero by others.</description>
+      <dc:creator/>
+      <pubDate>Sat, 26 Nov 2016 06:05:38 GMT</pubDate>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_per">Castro, Fidel</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Cuba</category>
+      <category domain="http://www.nytimes.com/namespaces/keywords/des">Deaths (Obituaries)</category>
+    </item>
+  </channel>
+</rss>
