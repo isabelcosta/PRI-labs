@@ -82,10 +82,12 @@ def extractKeyphrases(text):
     candidates = ngrams(text)
     # print candidates
 
-    print "\nCreating graph ... "
+    print "\nCreating graph ... \n"
 
     graph = {}
     graph2 = {}
+
+    ### TEMOS DE TER EM CONTA O NURMERO DE COOCORRENCIAS ? OU BASTA SABER SE EXISTE COOCORRENCIA OU NAO ? ###
 
     # for ngram in candidates[:15]:
     #     elementList = []
