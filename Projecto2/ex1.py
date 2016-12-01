@@ -11,7 +11,9 @@ import operator
 stopWords = list(stopwords.words('english'))
 
 """
-    text =>
+    input:
+        text => sentence without stopwords and punctuation (string)
+        n => degree of n-gram
 """
 def wordToNgrams(text, n, exact=True):
     return [" ".join(j) for j in zip(*[text[i:] for i in range(n)])]
