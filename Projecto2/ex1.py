@@ -8,22 +8,25 @@ from nltk import ngrams
 
 import operator
 
-
 stopWords = list(stopwords.words('english'))
 
-
-
+"""
+    text =>
+"""
 def wordToNgrams(text, n, exact=True):
     return [" ".join(j) for j in zip(*[text[i:] for i in range(n)])]
 
+"""
 
+    text => a single sentence (string)
+"""
 def ngrams(text):
 
     finalCandidates = []
 
-    text = "".join([c for c in text if c not in string.punctuation])
-    text = ''.join([c for c in text if not c.isdigit()]).lower()
-    tokensWithoutStopWords = [x for x in text.split() if x not in stopWords]
+    text_without_punctuation = "".join([c for c in text if c not in string.punctuation])
+    text_lower_case = ''.join([c for c in text_without_punctuation if not c.isdigit()]).lower()
+    tokensWithoutStopWords = [x for x in text_lower_case.split() if x not in stopWords]
 
     finalCandidates += tokensWithoutStopWords
     finalCandidates += wordToNgrams(tokensWithoutStopWords, 2)
@@ -46,6 +49,15 @@ def tok_sent(text):
 
     return sentenceList
 
+"""
+    Calculates PageRank score for each n-gram
+    input:
+        graph => dictionary with key = n-gram and value = [n-grams]
+        d => dumping factor
+        numloops => number of iterations
+    output:
+        ......
+"""
 def pagerank(graph, d, numloops):
 
     ranks = {}
@@ -54,7 +66,7 @@ def pagerank(graph, d, numloops):
         ranks[page] = 1.0 / npages
 
     for loop in range(0, numloops):
-        # print loop
+        print loop
         newranks = {}
         for page in graph:
             newrank = d / npages
@@ -65,27 +77,27 @@ def pagerank(graph, d, numloops):
         ranks = newranks
     return ranks
 
-def extractKeyphrases(text):
-
+def extractKeyphrases(document):
 
     print "\nFiltering document sentences ... "
-    sentenceList = tok_sent(text)
-    # print sentList
+    sentenceList = tok_sent(document)
+    # print sentenceList
 
-
+    candidates = []
+    # stores candidates per phrase
+    candidates_per_phrase = []
 
     for i, sent in enumerate(sentenceList):
         sentenceList[i] = "".join([c for c in sent if c not in string.punctuation])
+        print "\nGetting ngrams for phrase " + str(i) + "... "
+        candidates += ngrams(sentenceList[i])
+        candidates_per_phrase += [ngrams(sentenceList[i])]
 
-
-    print "\nGetting ngrams ... "
-    candidates = ngrams(text)
     # print candidates
 
     print "\nCreating graph ... \n"
 
     graph = {}
-    graph2 = {}
 
     ### TEMOS DE TER EM CONTA O NURMERO DE COOCORRENCIAS ? OU BASTA SABER SE EXISTE COOCORRENCIA OU NAO ? ###
 
@@ -101,25 +113,37 @@ def extractKeyphrases(text):
 
     ### CREATE GRAPH ###
 
-    for i, ngram in enumerate(candidates):
-        elementList = []
-        for n, sentence in enumerate(sentenceList):
-            if sentence.count(ngram) != 0:
-                for ngram2 in candidates:
-                    if sentence.count(ngram2) != 0 and ngram2 != ngram and ngram2 not in elementList:
-                        elementList += [ngram2]
+    for phrase_n_grams in candidates_per_phrase:
+        for n_gram in phrase_n_grams:
+            if n_gram in graph:
+                for other_gram in phrase_n_grams:
+                    if n_gram != other_gram and other_gram not in graph[n_gram]:
+                        graph[n_gram] += [other_gram]
+            else:
+                graph[n_gram] = []
+                for other_gram in phrase_n_grams:
+                    if n_gram != other_gram:
+                        graph[n_gram] += [other_gram]
 
 
+    """
+    phrase: era uma vez. abc vez.
 
-        graph2[ngram] = elementList
+    graph = {
+                'era': ['uma', 'vez'],
+                'uma': ['era', 'vez'],
+                'vez': ['abc', 'uma', 'era'],
+                'abc': ['vez']
+            }
 
-    for element in graph2:
-        print element
-        print graph2[element]
+    """
+    # for element in graph:
+    #     print element
+    #     print graph[element]
 
     print "\nCalculating Pagerank ... "
 
-    pagerankDic = pagerank(graph2,0.15,50)
+    pagerankDic = pagerank(graph,0.15,50)
 
     pagerankDicTop5 = dict(sorted(pagerankDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
 
