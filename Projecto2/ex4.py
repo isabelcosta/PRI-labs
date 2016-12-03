@@ -153,26 +153,34 @@ f = open('Top5keywords.html','w')
 message = """ <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-div#table {
-    padding-top: 1%;
-    width: 60%;
-    height: 500px;
-    background: white;
-    float: right;
-}
 div#title {
     font-family: "Lucida Console";
     color: green;
-    padding-left: 2%;
-}
+    width: 38%;
+    float: left;
 
+}
+div#title2 {
+    font-family: "Lucida Console";
+    color: green;
+    width: 62%;
+    float: right;
+
+}
+div#table {
+    width: 62%;
+    height: 500px;
+    float: right;
+}
 </style>
 </head>
 <body>
   <div id="title">
   <h3>Top 50 Keywords</h3>
   </div>
-  <div id="table">
+  <div id="title2">
+  <h3>Top 10 Keywords</h3>
+  </div>
     <style type="text/css">
       .tg  {border-collapse:collapse;border-spacing:0;border-color:#aaa;}
       .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aaa;color:#333;background-color:#fff;}
