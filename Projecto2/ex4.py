@@ -50,6 +50,7 @@ def pagerank(graph, d, numloops):
         ranks[page] = 1.0 / npages
 
     for i in range(0, numloops):
+        print "Loop: " + str(i+1)
         newranks = {}
         for page in graph:
             newrank = d / npages
@@ -64,7 +65,7 @@ def pagerank(graph, d, numloops):
 
 content = []
 
-root = etree.parse("nytAmericas.xml")
+root = etree.parse("http://rss.nytimes.com/services/xml/rss/nyt/World.xml")
 for title in root.xpath('//title'):
     # print title.text
     if title.text != None:
@@ -115,7 +116,7 @@ for phrase_n_grams in candidates_per_phrase:
 
 print "\nCalculating Pagerank ..."
 
-keywordDic = pagerank(graph,0.15,1)
+keywordDic = pagerank(graph,0.15,10)
 
 keywordDicTop10 = dict(sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:10])
 keywordDicTop50 = dict(sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:50])
@@ -156,7 +157,8 @@ message = """ <!DOCTYPE html>
 div#title {
     font-family: "Lucida Console";
     color: green;
-    width: 38%;
+    width: 36%;
+    padding-left: 2%;
     float: left;
 
 }
