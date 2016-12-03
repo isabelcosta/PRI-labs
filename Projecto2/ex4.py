@@ -172,6 +172,7 @@ div#table {
     height: 500px;
     float: right;
 }
+
 </style>
 </head>
 <body>
@@ -181,6 +182,7 @@ div#table {
   <div id="title2">
   <h3>Top 10 Keywords</h3>
   </div>
+  <div id="table">
     <style type="text/css">
       .tg  {border-collapse:collapse;border-spacing:0;border-color:#aaa;}
       .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aaa;color:#333;background-color:#fff;}
