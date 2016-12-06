@@ -17,7 +17,8 @@ def ngrams(text):
 
     finalCandidates = []
 
-    text = "".join([c for c in text if c not in string.punctuation])
+    # if c not in string.punctuation
+    text = "".join([c for c in text])
     text = ''.join([c for c in text if not c.isdigit()]).lower()
     tokensWithoutStopWords = [x for x in text.split() if x not in stopWords]
 
@@ -69,12 +70,12 @@ root = etree.parse("http://rss.nytimes.com/services/xml/rss/nyt/World.xml")
 for title in root.xpath('//title'):
     # print title.text
     if title.text != None:
-        content.append(title.text.encode('ascii', 'ignore'))
+        content.append(title.text)
 
 for description in root.xpath('//description'):
     # print description.text
     if description.text != None:
-        content.append(description.text.encode('ascii', 'ignore'))
+        content.append(description.text)
 
 content = ' '.join(content)
 # print content
@@ -116,22 +117,30 @@ for phrase_n_grams in candidates_per_phrase:
 
 print "\nCalculating Pagerank ..."
 
-keywordDic = pagerank(graph,0.15,10)
+keywordDic = pagerank(graph,0.15,1)
 
-keywordDicTop10 = dict(sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:10])
-keywordDicTop50 = dict(sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:50])
+keywordDicTop10 = sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:10]
+keywordDicTop50 = sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:50]
+
 
 wordList = []
 scoreList = []
-for keyword in keywordDicTop50:
-    wordList += [keyword]
-    scoreList += [str(keywordDicTop50[keyword])]
 
-# print wordList
-# print scoreList
+
+for keyword in keywordDicTop50:
+    wordList += [keyword[0]]
+    scoreList += [str(keyword[1])]
+    print keyword[0] + " --> " + str(keyword[1])
+
+print "\nPagerank Top 10:\n "
+
+for keyword in keywordDicTop50[:10]:
+    print keyword[0] + " --> " + str(keyword[1])
 
 wordListStr = ' '.join(wordList)
 
+# print wordList
+# print scoreList
 
 # print "\nCreating CSV ..."
 #
@@ -141,11 +150,11 @@ wordListStr = ' '.join(wordList)
 #     w.writerow(('Keyword', 'Score'))
 #     w.writerows(keywordDicTop10.items())
 
-print "\nPagerank Top 10:\n "
 
-for ngram in keywordDicTop10:
-    print ngram
-    print keywordDicTop10[ngram]
+
+# for ngram in teste:
+#     print ngram
+#     print keywordDicTop10[ngram]
 
 print "\nCreating HTML page ... \n"
 
@@ -338,9 +347,8 @@ div#table {
 
 
 
-f.write(message)
+f.write(message.encode("utf-8"))
 f.close()
 
 # print message
-
 # webbrowser.open_new_tab('C:\Users\Fernando\Desktop\PRI\PRI-labs\Projecto2\Top5keywords.html')
