@@ -9,6 +9,7 @@ import nltk
 import operator
 import itertools
 import os
+from math import log
 
 
 stopWords = list(stopwords.words('english'))
@@ -19,64 +20,55 @@ stopWords = list(stopwords.words('english'))
 ### Mean Precision
 
 
-### TF IDF
+
+#CALCULO IDF
+# N="docs in collection, nt=#docs with term
+def IDF(N, nt):
+    return log(1+(N-nt+0.5)/(nt+0.5))
 
 
 ### BM25
+#CALCULO BM25
+#recebe o idef, o tf, D=doc length=(#words), avgdl=avg D
+def BM25( idf, tf, D, avgdl):
+    k=1.2
+    b= 0.75
+    top = tf *(k+1)
+    aux = D/avgdl
+    bottom = tf + k * (1 - b + b * aux)
+    return idf * top/bottom
 
 
 ### PRIOR
+#def Prior():
+
+
 
 
 ### WEIGHT
 
 
 ### PageRank
-def pagerank(graph, d, numloops):
+# def pagerank(graph, keywords, Priors, Weights, d, numloops):
+#
+#     ranks = {}
+#     nKeys = len(graph)
+#     for key in graph:
+#         ranks[key] = 1.0 / nKeys
+#
+#     for loop in range(0, numloops):
+#         # print loop
+#         newranks = {}
+#         for key in graph:
+#             newrank = d / nKeys
+#             for node in graph:
+#                 if page in graph[node]:
+#                     # newrank = newrank + (1 - d) * (ranks[node] / len(graph[node]))
+#                     newrank = d * Prior(node)/AllPriors + (1-d)* (for each co_oc of node ((rank(co_oc)*Weight)/sumAllWeights of co-oc ) )
+#             newranks[page] = newrank
+#         ranks = newranks
+#     return ranks
 
-    ranks = {}
-    npages = len(graph)
-    for page in graph:
-        ranks[page] = 1.0 / npages
-
-    for loop in range(0, numloops):
-        # print loop
-        newranks = {}
-        for page in graph:
-            newrank = d / npages
-            for node in graph:
-                if page in graph[node]:
-                    # newrank = newrank + (1 - d) * (ranks[node] / len(graph[node]))
-                    newrank = d * Prior(node)/AllPriors + (1-d)* (for each co_oc of node ((rank(co_oc)*Weight)/sumAllWeights of co-oc ) )
-            newranks[page] = newrank
-        ranks = newranks
-    return ranks
-
-### Graph
-def createGraph2(candidates, sentencesList):
-
-    graph={}
-
-    for docID, docC in enumerate(candidates):
-        print "DOC " + str(docID) + " ############################################################################################"
-
-        for i, ngram in enumerate(docC):
-            print "NGRAM : " +str(i) + " of DOC " + str(docID) +" ###############################################################"
-            #print ngram
-            elementList = []
-            for j, docS in enumerate(sentencesList):
-
-                for n, sentence in enumerate(docS):
-                    print "SENTENCE " + str(n) + " in DOC " + str(j) + " ######################################3"
-                    print sentence
-                    if sentence.count(ngram) != 0:
-                        for ngram2 in candidates[docID]:
-                            print "CO OCCURECE NGRAM " + ngram2 + " in DOC " + str(docID) + " ######################################3"
-                            if sentence.count(ngram2) != 0 and ngram2 != ngram and ngram2 not in elementList:
-                                elementList += [ngram2]
-
-            graph[ngram] = elementList
-    return graph
 
 
 
@@ -86,15 +78,19 @@ def createGraph(DocCandidates, candidatesBySentences):
 
     for ngram in DocCandidates:
         print ngram
-        co_oc=[]
+        co_oc={}
 
         for sentence in candidatesBySentences:
             if ngram in sentence:
                 print "IIIIIIIIN"
                 for ngram2 in sentence:
-                    if ngram2!=ngram and ngram2 not in co_oc:
-                        print "YEEEEEEE CO OC"
-                        co_oc.append(ngram2)
+                    if ngram2!=ngram:
+                        #nCo_oc=1
+                        if ngram2 not in co_oc:
+                            print "YEEEEEEE CO OC"
+                            co_oc[ngram2]= 1
+                        else:
+                            co_oc[ngram2] = co_oc[ngram2] +1
 
         print co_oc
         graph[ngram]= co_oc
@@ -178,6 +174,12 @@ def tok_sent(text):
     ### [0] porque o sent tokenize tem de receber uma string ###
     sentenceList = sent_tokenize(sentences[0])
 
+    for i,sentence in enumerate(sentenceList):
+        text="".join([c for c in sentence if c not in string.punctuation])
+        text = ''.join([c for c in text if not c.isdigit()])
+        sentenceList[i] =text
+
+
     # for sent in sentList:
     #      print sent
 
@@ -187,116 +189,43 @@ def tok_sent(text):
 
 
 
-
-### Extract Keyphrases
-def extractKeyphrases2(train, dataset):
-
-    sentencesList=[]
-    print "\nFiltering documents' sentences ... "
-    # for doc in dataset:
-    #     print doc
-    #     sentencesList += [tok_sent(dataset[doc])]
-    sentencesList = tok_sent(dataset)
-    print sentencesList
-
-
-    # for doc in sentencesList:
-    #     for i, sentence in enumerate(doc):
-    #         doc[i] = "".join([c for c in sentence if c not in string.punctuation])
-    for i, sent in enumerate(sentencesList):
-        sentencesList[i] = "".join([c for c in sent if c not in string.punctuation])
-
-
-
-    print "\nGetting ngrams ... "
-
-    # candidates=[]
-    # for doc in dataset:
-    #     print doc
-    #     candidates +=[tok(dataset[doc])]
-   # print candidates
-    candidates=tok(dataset)
-
-
-    print "NUMBER OF NGRAMS ############################3"
-    # for i, pos in enumerate(candidates):
-    #     print len(candidates[i])
-    print len(candidates)
-
-    print "\nCreating graph ... "
-    graph = createGraph([candidates], [sentencesList])
-    #
-    # for element in graph:
-    #     print element
-    #     print graph[element]
-
-
-
 # --------------------------------------------------------------------#
 
 
 def extractKeyphrases( train, dataset):
 
+    NDocs = len(train)
     #ngrams per doc
     candidatesByDoc = {}
 
     #candidates per senteces per doc
     candidatesBySentence = {}
 
-    print dataset
-
-    # docSentences={}
-    # for doc in dataset:
-    #     print doc
-    #
-    #     candidatesDoc=[]
-    #
-    #     # GET SENTENCES
-    #     docSentences[doc] = tok_sent(dataset[doc])
-    #
-    #     candidatesBySentence[doc] = []
-    #
-    #
-    #     #GET NGRAMS
-    #     for sentence in docSentences[doc]:
-    #         candidates = []
-    #         candidates += tok(sentence)
-    #
-    #         #FOR EACH SENTENCE
-    #         candidatesBySentence[doc] += [candidates]
-    #
-    #         # FOR EACH DOC
-    #         for ngram in candidates:
-    #             if ngram not in candidatesDoc:
-    #                 candidatesDoc.append(ngram)
-    #
-    #                 if ngram not in allCandidates:
-    #                     allCandidates.append(ngram)
-    #
-    #
-    #     #print candidatesBySentence
-    #     #print all
-    #
-    #     candidatesByDoc[doc] = candidatesDoc
-
-
-
 
     docSentences = {}
+    filteredTrain={}
+    docsLen={}  ##number of words
     for doc in dataset:
-        print doc
+#        print doc
 
+        docContent=""
         candidatesDoc = []
 
         # GET SENTENCES
         docSentences[doc] = tok_sent(dataset[doc])
 
         candidatesBySentence[doc] = []
+        lengthDoc=0
 
         # GET NGRAMS
         for sentence in docSentences[doc]:
             candidates = []
             candidates += tok(sentence)
+
+            #length
+            lengthDoc+= len(sentence.split())
+
+            docContent+=sentence
 
             # FOR EACH SENTENCE
             candidatesBySentence[doc] += [candidates]
@@ -307,10 +236,14 @@ def extractKeyphrases( train, dataset):
                     candidatesDoc.append(ngram)
 
         # print candidatesBySentence
-
+        docsLen[doc]= lengthDoc
         candidatesByDoc[doc] = candidatesDoc
+        print "print candidates doc" + doc
+        print candidatesByDoc
+        filteredTrain[doc]=docContent
+   # print candidatesBySentence
 
-    print candidatesBySentence
+
 
     #CREATE GRAPHS
     graphs={}
@@ -326,15 +259,62 @@ def extractKeyphrases( train, dataset):
             print "    " + ngram + ": " + str(graphs[doc][ngram])
 
 
+
+
+    # CALCULATE PRIOR
+    print "YEYY TF"
+    ####CALCULATES TF FOR INPUT ####
+    scoresTF = {}
+    for doc in candidatesByDoc:
+        scoresDoc= {}
+        for ngram in candidatesByDoc[doc]:
+            scoresDoc[ngram] = filteredTrain[doc].count(ngram)/docsLen[doc]
+
+        scoresTF[doc]=scoresDoc
+
+    print scoresTF
+
+    print "YEYY IDF"
+    ####CALCULATES IDF FOR BACKGROUND COLLECTION ####
+    scoresIDF = {}
+    for doc in candidatesByDoc:
+        docScores={}
+        for ngram in candidatesByDoc[doc]:
+            print ngram
+            nt = sum(1 for doc in filteredTrain if ngram in filteredTrain[doc]) #FALTA FILTERING TRAIN DATASET
+            print NDocs
+            print nt
+            docScores[ngram] = IDF(NDocs, nt)
+        scoresIDF[doc]=docScores
+
+    print scoresIDF
+
+    # avg length of the docs
+    sumWords = 0
+    for doc in docsLen:
+        sumWords += docsLen[doc]
+    avgDL = sumWords / NDocs
+
+    print "YEYY BM25"
+    ###Calculating BM25 --> PRIOR
+    scoresBM25 = {}
+    for doc in candidatesByDoc:
+        scoreDoc={}
+        for ngram in candidatesByDoc[doc]:
+            scoresDoc[ngram]= BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
+        scoresBM25[doc]=scoresDoc
+
+    for doc in scoresBM25:
+        print doc
+        for ngram in scoresBM25[doc]:
+            print "    " + ngram + ": " + str(scoresBM25[doc][ngram])
+
+
+
     #CALCULATE PAGERANK
-
-
-
-
-
-
-
-
+    # PageRank={}
+    # for doc in candidatesByDoc:
+    #     pr=pagerank(graphs[doc], candidatesByDoc[doc], scoresBM25[doc], graphs[doc], 0.15, 3):
 
 
 
