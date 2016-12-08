@@ -4,12 +4,17 @@ from sklearn.datasets import fetch_20newsgroups
 import string
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
+from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 import operator
 import itertools
 import os
+from math import*
 from math import log
+from sklearn.linear_model import Perceptron
+from numpy import dot
+
 
 
 stopWords = list(stopwords.words('english'))
@@ -40,15 +45,12 @@ def BM25( idf, tf, D, avgdl):
 
 
 
-
-
-
 def createGraph(DocCandidates, candidatesBySentences):
 
     graph={}
 
     for ngram in DocCandidates:
-        print ngram
+        # print ngram
         co_oc={}
 
         for sentence in candidatesBySentences:
@@ -61,7 +63,7 @@ def createGraph(DocCandidates, candidatesBySentences):
                         else:
                             co_oc[ngram2] = co_oc[ngram2] +1
 
-        print co_oc
+        # print co_oc
         graph[ngram]= co_oc
 
     return graph
@@ -114,7 +116,7 @@ def tok(text):
 
     text = "".join([c for c in text if c not in string.punctuation])
     text = ''.join([c for c in text if not c.isdigit()])
-    tokens = nltk.word_tokenize(text)
+    tokens = word_tokenize(text)
     tokensWithoutStopWords = [x for x in tokens if x not in stopWords]
 
     tags = nltk.pos_tag(tokensWithoutStopWords)
@@ -153,6 +155,48 @@ def tok_sent(text):
 
     return sentenceList
 
+def dot_product(a, b):
+    return sum([a[i]*b[i] for i in range(len(a))])
+
+
+def decision( x, w, theta ):
+    return (dot_product(x, w) > theta)
+
+
+def perceptron(matrix):
+
+    # Weights NEED to have the number of elements = to the number of features of matrix
+    weights = [0,0]
+    x = 0
+    theta = 0
+    converged = False
+
+    print "\nPERCEPTRON\n"
+
+    while not converged:
+        x += 1
+        if x > 50:  # Being lazy for now
+            converged = True
+
+        for key, val in matrix.iteritems():
+            # Multiplies both matrices and checks if the value is bigger than theta
+            # returns True if that happens or False otherwise
+            d = decision(key, weights, theta)
+            if d == val:
+                continue
+            elif d == False and val == True:
+                theta -= 1
+                for i in range(len(key)):
+                    weights[i] += key[i]
+
+            elif d == True and val == False:
+                theta += 1
+                for i in range(len(key)):
+                    weights[i] -= key[i]
+    # Returns the ideal weight and theta
+    return weights, theta
+
+
 
 
 
@@ -160,7 +204,7 @@ def tok_sent(text):
 # --------------------------------------------------------------------#
 
 
-def extractKeyphrases( train, dataset):
+def extractKeyphrases( train, dataset, keys):
 
     NDocs = len(train)
     #ngrams per doc
@@ -211,7 +255,7 @@ def extractKeyphrases( train, dataset):
         filteredTrain[doc]=docContent
    # print candidatesBySentence
 
-
+    print "\nCreating Graphs...\n"
 
     #CREATE GRAPHS
     graphs={}
@@ -220,17 +264,8 @@ def extractKeyphrases( train, dataset):
         graph= createGraph(candidatesByDoc[doc], candidatesBySentence[doc])
         graphs[doc]= graph
 
-
-    for doc in graphs:
-        print doc
-        for ngram in graphs[doc]:
-            print "    " + ngram + ": " + str(graphs[doc][ngram])
-
-
-
-
     # CALCULATE PRIOR
-    print "YEYY TF"
+    print "\nCalculating TF ...\n"
     ####CALCULATES TF FOR INPUT ####
     scoresTF = {}
     for doc in candidatesByDoc:
@@ -242,7 +277,7 @@ def extractKeyphrases( train, dataset):
 
     # print scoresTF
 
-    print "YEYY IDF"
+    print "\nCalculating IDF ...\n"
     ####CALCULATES IDF FOR BACKGROUND COLLECTION ####
     scoresIDF = {}
     for doc in candidatesByDoc:
@@ -263,7 +298,7 @@ def extractKeyphrases( train, dataset):
         sumWords += docsLen[doc]
     avgDL = sumWords / NDocs
 
-    print "YEYY BM25"
+    print "\nCalculating BM25 ...\n"
     ###Calculating BM25 --> PRIOR
     scoresBM25 = {}
     for doc in candidatesByDoc:
@@ -272,33 +307,65 @@ def extractKeyphrases( train, dataset):
             scoresDoc[ngram]= BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
         scoresBM25[doc]=scoresDoc
 
-    # for doc in scoresBM25:
-    #     print doc
-    #     for ngram in scoresBM25[doc]:
-    #         print "    " + ngram + ": " + str(scoresBM25[doc][ngram])
+    print"\nCreating Test Matrix ...\n"
+
+    # List of keywords for each file in the colection
+    keywordListByFile = []
+
+    for keyFile in keys:
+        # List of keywords in each file
+        keywordList = []
+        for line in keys[keyFile].splitlines():
+            # Adds a list of the file keywords to the main(keywordListByFile) list
+            keywordList += [line]
+        keywordListByFile += [keywordList]
 
 
-    print"\n\n\nMATRIX X\n\n\n"
-
+    # Creates a matrix ---> dic { (feature1, feaature2,...): Val }
+    # Features ex: BM25, Pagerank, TF-Idf, ...
+    # Val = True if the ngram belongs to the keys of the doc False otherwise
     Xmatrix = {}
-    for doc in candidatesByDoc:
-        for ngram in candidatesByDoc[doc]:
+
+    for i, doc in enumerate(candidatesByDoc):
+        for n,ngram in enumerate(candidatesByDoc[doc]):
+            # Calc Tf-Idf and BM25
             tfIdf_Score = scoresIDF[doc][ngram]* scoresTF[doc][ngram]
             BM25_Score = BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
-            Xmatrix[ngram] = [tfIdf_Score, BM25_Score, 3]
 
-    for ngram in Xmatrix:
-        print Xmatrix[ngram]
-
-
-
-
+            # If ngram belongs to the keys of that specific file = True or False Otherwise
+            if ngram in keywordListByFile[i]:
+                Xmatrix[(tfIdf_Score, BM25_Score)] = True
+            else:
+                Xmatrix[(tfIdf_Score, BM25_Score)] = False
 
 
+    print Xmatrix
 
 
+    print "\nPerceptron\n"
 
+    # Penso nao haver problema em usar o mesmo dataset como test
+    trainMatrix = Xmatrix
+    testMatrix = Xmatrix
 
+    weights, theta = perceptron(trainMatrix)
+
+    print "\nIdeal weights and theta: \n"
+    print weights, theta
+
+    print "\nPerceptron Result: \n"
+
+    for key, val in testMatrix.iteritems():
+        # Multiplies the Test matrix by the ideal weight and theta returned by perceptron
+        # checking if the value is bigger than theta
+        # returns True if that happens or False otherwise
+        d = decision(key, weights, theta)
+        answer = "Wrong! :("
+        # If d = val it means that we correctly predictec that this specific ngram is a keyword
+        # because it is also present in the keys of the file were it appears
+        if d == val:
+            answer = "Correct! :)"
+        print answer, " --> ", key, d, val
 
     #CALCULATE PAGERANK
     # PageRank={}
@@ -306,26 +373,10 @@ def extractKeyphrases( train, dataset):
     #     pr=pagerank(graphs[doc], candidatesByDoc[doc], scoresBM25[doc], graphs[doc], 0.15, 3):
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # --------------------------------------------------------------------#
 
 fileList = {}
+keyList = {}
 knownKeyphrases = []
 predictedKeyphrases = []
 
@@ -345,8 +396,10 @@ for docName in os.listdir(datasetPath):
     if docName.endswith(".txt"):
         f = open(datasetPath + docName, 'r')
         fileList[docName.partition(".txt")[0]] = f.read().decode("utf-8").encode("ascii", "ignore")
-        #print docName.partition(".txt")[0]
-        #print type(fileList[docName.partition(".txt")[0]])
+        f.close()
+    else:
+        f = open(datasetPath + docName, 'r')
+        keyList[docName.partition(".key")[0]] = f.read().decode("utf-8").encode("ascii", "ignore")
         f.close()
 
 
@@ -360,7 +413,7 @@ inputCont = inputCont.decode("unicode_escape")
 inputData={}
 inputData["doc1"]= inputCont
 
-keyphrases = extractKeyphrases(fileList, fileList)
+keyphrases = extractKeyphrases(fileList, fileList, keyList)
 
 
 
