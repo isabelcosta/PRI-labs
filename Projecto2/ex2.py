@@ -19,13 +19,65 @@ stopWords = list(stopwords.words('english'))
 
 ### Mean Precision
 
+def calc_precision(tp, fp):
+    return float(tp / (tp + fp))
+
+def calc_recall(tp, fn):
+    return float(tp / (tp + fn))
+
+def calc_f1(precision, recall):
+    if precision == 0 and recall == 0:
+        return "N/A"
+    return 2 * ((precision * recall) / (precision + recall))
+
+def calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases):
+
+    tp = sum(1 for key in knownKeyphrases if key in predictedKeyphrases)
+    # tp = sum(1 for key in predictedKeyphrases if key in knownKeyphrases)
+
+    fn = len(knownKeyphrases) - tp
+    fp = len(predictedKeyphrases) - tp
+
+    precision = calc_precision(tp, fp)
+    recall = calc_recall(tp, fn)
+
+    f1_score = calc_f1(precision, recall)
+
+    print docName + ": " + str(precision) + ", " + str(recall) + ", " + str(f1_score)
+    return precision, recall, f1_score
+
+def calc_mean_avg_precision(all_precisions):
+    mean_avg_precision =  sum(all_precisions)/len(all_precisions)
+    print "Mean Average Precision: \t" + str(mean_avg_precision)
+    return mean_avg_precision
 
 
 #CALCULO IDF
 # N="docs in collection, nt=#docs with term
-def IDF(N, nt):
-    return log(1+(N-nt+0.5)/(nt+0.5))
+def IDF(candidatesByDoc, filteredTrain, NDocs):
+    scoresIDF = {}
+    for doc in candidatesByDoc:
+        docScores={}
+        for ngram in candidatesByDoc[doc]:
+            #print ngram
+            nt = sum(1 for doc in filteredTrain if ngram in filteredTrain[doc]) #FALTA FILTERING TRAIN DATASET
+            #print NDocs
+            #print nt
+            docScores[ngram] = log(1+(NDocs-nt+0.5)/(nt+0.5))
+        scoresIDF[doc]=docScores
+    return scoresIDF
 
+
+
+def TF(candidatesbyDoc, filteredTrain, docsLen):
+    scoresTF = {}
+    for doc in candidatesbyDoc:
+        scoresDoc= {}
+        for ngram in candidatesbyDoc[doc]:
+            scoresDoc[ngram] = filteredTrain[doc].count(ngram)/docsLen[doc]
+
+        scoresTF[doc]=scoresDoc
+    return scoresTF
 
 ### BM25
 #CALCULO BM25
@@ -48,8 +100,37 @@ def BM25( idf, tf, D, avgdl):
 ### WEIGHT
 
 
-### PAGERANK
-def pagerank(graph, keywords, Prior, d, numloops):
+"""
+    Calculates PageRank score for each n-gram
+    input:
+        graph => dictionary with key = n-gram and value = [n-grams]
+        d => dumping factor
+        numloops => number of iterations
+    output:
+        ......
+"""
+def pagerank(graph, d, numloops):
+
+    ranks = {}
+    npages = len(graph)
+    for page in graph:
+        ranks[page] = 1.0 / npages
+
+    for loop in range(0, numloops):
+        # print loop
+        newranks = {}
+        for page in graph:
+            newrank = d / npages
+            for node in graph:
+                if page in graph[node]:
+                    newrank = newrank + (1 - d) * (ranks[node] / len(graph[node]))
+            newranks[page] = newrank
+        ranks = newranks
+    return ranks
+
+
+### PAGERANK IMPROVED
+def pagerankImproved(graph, keywords, Prior, d, numloops):
 
     ranks = {}
 
@@ -90,7 +171,14 @@ def pagerank(graph, keywords, Prior, d, numloops):
 
             newRanks[ngram] = newRank
 
+
+        # for ng in newRanks:
+        #     newRanks[ng]=newRanks[ng]/nCandidates
         ranks = newRanks
+
+    ##normalization
+    for ng in ranks:
+        ranks[ng]=ranks[ng]/nCandidates
 
     return ranks
 
@@ -224,10 +312,13 @@ def extractKeyphrases( train, dataset):
     #ngrams per doc
     candidatesByDoc = {}
 
+    #ngrams and tehir position value sentence relative ??
+    candidatesDocSentenceWeight = {}
+
     #candidates per senteces per doc
     candidatesBySentence = {}
 
-
+    print "Creating ngrams"
     docSentences = {}
     filteredTrain={}
     docsLen={}  ##number of words
@@ -240,13 +331,17 @@ def extractKeyphrases( train, dataset):
         # GET SENTENCES
         docSentences[doc] = tok_sent(dataset[doc])
 
+        nSentences= len(docSentences[doc])
+        ngram_pos={}
+
         candidatesBySentence[doc] = []
         lengthDoc=0
 
         # GET NGRAMS
-        for sentence in docSentences[doc]:
+        for i,sentence in enumerate(docSentences[doc]):
             candidates = []
             candidates += tok(sentence)
+
 
             #length
             lengthDoc+= len(sentence.split())
@@ -260,14 +355,16 @@ def extractKeyphrases( train, dataset):
             for ngram in candidates:
                 if ngram not in candidatesDoc:
                     candidatesDoc.append(ngram)
+                    ngram_pos[ngram]=(nSentences - i)/nSentences
 
         # print candidatesBySentence
         docsLen[doc]= lengthDoc
         candidatesByDoc[doc] = candidatesDoc
+        candidatesDocSentenceWeight[doc]= ngram_pos
+
         # print "print candidates doc" + doc
-        # print candidatesByDoc
+
         filteredTrain[doc]=docContent
-   # print candidatesBySentence
 
 
 
@@ -278,7 +375,6 @@ def extractKeyphrases( train, dataset):
         graph= createGraph(candidatesByDoc[doc], candidatesBySentence[doc])
         graphs[doc]= graph
 
-
     # for doc in graphs:
     #     print doc
     #     for ngram in graphs[doc]:
@@ -287,33 +383,16 @@ def extractKeyphrases( train, dataset):
 
 
 
-    # CALCULATE PRIOR
+    # CALCULATE PRIORS
+
     print "YEYY TF"
-    ####CALCULATES TF FOR INPUT ####
-    scoresTF = {}
-    for doc in candidatesByDoc:
-        scoresDoc= {}
-        for ngram in candidatesByDoc[doc]:
-            scoresDoc[ngram] = filteredTrain[doc].count(ngram)/docsLen[doc]
+    scoresTF = TF(candidatesByDoc, filteredTrain, docsLen)
 
-        scoresTF[doc]=scoresDoc
-
-    #print scoresTF
 
     print "YEYY IDF"
-    ####CALCULATES IDF FOR BACKGROUND COLLECTION ####
-    scoresIDF = {}
-    for doc in candidatesByDoc:
-        docScores={}
-        for ngram in candidatesByDoc[doc]:
-            #print ngram
-            nt = sum(1 for doc in filteredTrain if ngram in filteredTrain[doc]) #FALTA FILTERING TRAIN DATASET
-            #print NDocs
-            #print nt
-            docScores[ngram] = IDF(NDocs, nt)
-        scoresIDF[doc]=docScores
+    scoresIDF = IDF(candidatesByDoc, filteredTrain, NDocs)
 
-   # print scoresIDF
+
 
     # avg length of the docs
     sumWords = 0
@@ -327,8 +406,8 @@ def extractKeyphrases( train, dataset):
     for doc in candidatesByDoc:
         scoreDoc={}
         for ngram in candidatesByDoc[doc]:
-            scoresDoc[ngram]= BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
-        scoresBM25[doc]=scoresDoc
+            scoreDoc[ngram]= BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
+        scoresBM25[doc]=scoreDoc
 
     # for doc in scoresBM25:
     #     print doc
@@ -336,15 +415,47 @@ def extractKeyphrases( train, dataset):
     #         print "    " + ngram + ": " + str(scoresBM25[doc][ngram])
 
 
+    Priors={}
+    Priors['SENTENCE'] = candidatesDocSentenceWeight
+    Priors['BM25']=scoresBM25
+
+
+
+
+
 
     ##CALCULATE PAGERANK
-    PageRank={}
+    PageRankOriginal={}
+    PageRankImproved = {}
     for doc in candidatesByDoc:
-        pr=pagerank(graphs[doc], candidatesByDoc[doc], scoresBM25[doc],  0.15, 3)
         print doc
-        print sorted(pr.iteritems(), key=operator.itemgetter(1), reverse=True)
+        pro=pagerank(graphs[doc],   0.15, 3)
+        print "PAGERANK ORIGINAL"
+        print sorted(pro.iteritems(), key=operator.itemgetter(1), reverse=True)
+        PageRankOriginal[doc] = pro
 
-        PageRank[doc]=pr
+        print "PAGERANK IMPROVED -  SENTENCE AND CO-OCCURRENCE"
+        prISC = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'][doc], 0.15, 3)
+        print sorted(prISC.iteritems(), key=operator.itemgetter(1), reverse=True)
+        #PageRankImproved[doc] = pri
+
+        print "PAGERANK IMPROVED -  BM25 AND CO-OCCURRENCE"
+        prIBC = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['SENTENCE'][doc], 0.15, 3)
+        print sorted(prIBC.iteritems(), key=operator.itemgetter(1), reverse=True)
+
+        # print "PAGERANK IMPROVED -  SENTENCE AND SIMILIRATY"
+        # prISS = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'], 0.15, 3)
+        # print sorted(prISS.iteritems(), key=operator.itemgetter(1), reverse=True)
+        #
+        # print "PAGERANK IMPROVED -  SENTENCE AND CO-OCCURRENCE"
+        # prIBS = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'], 0.15, 3)
+        # print sorted(prIBS.iteritems(), key=operator.itemgetter(1), reverse=True)
+
+
+
+
+
+
 
 
 
@@ -402,9 +513,9 @@ inputCont = inputDoc.read()
 inputCont = inputCont.decode("unicode_escape")
 
 inputData={}
-inputData["doc1"]= inputCont
+inputData["Nihilism Wikipedia"]= inputCont
 
-keyphrases = extractKeyphrases(inputData, inputData)
+keyphrases = extractKeyphrases(fileList, fileList)
 
 
 
