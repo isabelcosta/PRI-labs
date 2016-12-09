@@ -20,17 +20,70 @@ from numpy import dot
 stopWords = list(stopwords.words('english'))
 
 
+
 ##############  FUNCTIONS  ##################
 
 ### Mean Precision
 
+def calc_precision(tp, fp):
+    return float(tp / (tp + fp))
+
+def calc_recall(tp, fn):
+    return float(tp / (tp + fn))
+
+def calc_f1(precision, recall):
+    if precision == 0 and recall == 0:
+        return "N/A"
+    return 2 * ((precision * recall) / (precision + recall))
+
+def calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases):
+
+    tp = sum(1 for key in knownKeyphrases if key in predictedKeyphrases)
+    # tp = sum(1 for key in predictedKeyphrases if key in knownKeyphrases)
+
+    fn = len(knownKeyphrases) - tp
+    fp = len(predictedKeyphrases) - tp
+
+    precision = calc_precision(tp, fp)
+    recall = calc_recall(tp, fn)
+
+    f1_score = calc_f1(precision, recall)
+
+    print docName + ": " + str(precision) + ", " + str(recall) + ", " + str(f1_score)
+    return precision, recall, f1_score
+
+def calc_mean_avg_precision(all_precisions):
+    mean_avg_precision =  sum(all_precisions)/len(all_precisions)
+    print "Mean Average Precision: \t" + str(mean_avg_precision)
+    return mean_avg_precision
 
 
 #CALCULO IDF
 # N="docs in collection, nt=#docs with term
-def IDF(N, nt):
-    return log(1+(N-nt+0.5)/(nt+0.5))
+def IDF(candidatesByDoc, filteredTrain, NDocs):
+    scoresIDF = {}
+    for doc in candidatesByDoc:
+        docScores={}
+        for ngram in candidatesByDoc[doc]:
+            #print ngram
+            nt = sum(1 for doc in filteredTrain if ngram in filteredTrain[doc]) #FALTA FILTERING TRAIN DATASET
+            #print NDocs
+            #print nt
+            docScores[ngram] = log(1+(NDocs-nt+0.5)/(nt+0.5))
+        scoresIDF[doc]=docScores
+    return scoresIDF
 
+
+
+def TF(candidatesbyDoc, filteredTrain, docsLen):
+    scoresTF = {}
+    for doc in candidatesbyDoc:
+        scoresDoc= {}
+        for ngram in candidatesbyDoc[doc]:
+            scoresDoc[ngram] = filteredTrain[doc].count(ngram)/docsLen[doc]
+
+        scoresTF[doc]=scoresDoc
+    return scoresTF
 
 ### BM25
 #CALCULO BM25
@@ -44,26 +97,122 @@ def BM25( idf, tf, D, avgdl):
     return idf * top/bottom
 
 
+### PRIOR
+#def Prior():
+
+
+
+
+### WEIGHT
+
+
+"""
+    Calculates PageRank score for each n-gram
+    input:
+        graph => dictionary with key = n-gram and value = [n-grams]
+        d => dumping factor
+        numloops => number of iterations
+    output:
+        ......
+"""
+def pagerank(graph, d, numloops):
+
+    ranks = {}
+    npages = len(graph)
+    for page in graph:
+        ranks[page] = 1.0 / npages
+
+    for loop in range(0, numloops):
+        # print loop
+        newranks = {}
+        for page in graph:
+            newrank = d / npages
+            for node in graph:
+                if page in graph[node]:
+                    newrank = newrank + (1 - d) * (ranks[node] / len(graph[node]))
+            newranks[page] = newrank
+        ranks = newranks
+    return ranks
+
+
+### PAGERANK IMPROVED
+def pagerankImproved(graph, keywords, Prior, d, numloops):
+
+    ranks = {}
+
+    nCandidates = len(graph)
+    for ngram in graph:
+        ranks[ngram] = 1.0 / nCandidates
+
+
+    SumAllPriors=0
+    for x in Prior.values():
+        SumAllPriors+=x
+
+    b=1-d
+
+    for loop in range(0, numloops):
+
+        newRanks = {}
+        for ngram in graph:
+
+            #
+            Sum =0
+
+            weights= graph[ngram]
+
+            for co_oc in graph[ngram]:
+
+                # nominator
+                nom = ranks[co_oc] * weights[co_oc]
+
+                # denominator
+                sumWeight = 0
+                for co_ocWeights in graph[co_oc].values():
+                    sumWeight+=co_ocWeights
+
+                Sum+= nom/sumWeight
+
+            newRank= d * Prior[ngram]/SumAllPriors + b+Sum
+
+            newRanks[ngram] = newRank
+
+
+        # for ng in newRanks:
+        #     newRanks[ng]=newRanks[ng]/nCandidates
+        ranks = newRanks
+
+    ##normalization
+    for ng in ranks:
+        ranks[ng]=ranks[ng]/nCandidates
+
+    return ranks
+
+
+
+
 
 def createGraph(DocCandidates, candidatesBySentences):
 
     graph={}
 
     for ngram in DocCandidates:
-        # print ngram
+        #print ngram
         co_oc={}
 
         for sentence in candidatesBySentences:
             if ngram in sentence:
+               # print "IIIIIIIIN"
                 for ngram2 in sentence:
                     if ngram2!=ngram:
                         #nCo_oc=1
                         if ngram2 not in co_oc:
+                           # print "YEEEEEEE CO OC"
                             co_oc[ngram2]= 1
                         else:
                             co_oc[ngram2] = co_oc[ngram2] +1
 
-        # print co_oc
+        #print co_oc
         graph[ngram]= co_oc
 
     return graph
@@ -116,7 +265,7 @@ def tok(text):
 
     text = "".join([c for c in text if c not in string.punctuation])
     text = ''.join([c for c in text if not c.isdigit()])
-    tokens = word_tokenize(text)
+    tokens = nltk.word_tokenize(text)
     tokensWithoutStopWords = [x for x in tokens if x not in stopWords]
 
     tags = nltk.pos_tag(tokensWithoutStopWords)
@@ -131,6 +280,7 @@ def tok(text):
     #choosing ngrams n=[1,3]
     final = [ngram for ngram in result if len(ngram.split())<=3]
 
+    #print final
     return final
 
 
@@ -155,6 +305,7 @@ def tok_sent(text):
 
     return sentenceList
 
+
 def dot_product(a, b):
     return sum([a[i]*b[i] for i in range(len(a))])
 
@@ -166,7 +317,7 @@ def decision( x, w, theta ):
 def perceptron(matrix):
 
     # Weights NEED to have the number of elements = to the number of features of matrix
-    weights = [0,0]
+    weights = [0,0,0]
     x = 0
     theta = 0
     converged = False
@@ -198,10 +349,8 @@ def perceptron(matrix):
 
 
 
-
-
-
-# --------------------------------------------------------------------#
+##############################################################
+##############################################################
 
 
 def extractKeyphrases( train, dataset, keys):
@@ -210,15 +359,18 @@ def extractKeyphrases( train, dataset, keys):
     #ngrams per doc
     candidatesByDoc = {}
 
+    #ngrams and tehir position value sentence relative ??
+    candidatesDocSentenceWeight = {}
+
     #candidates per senteces per doc
     candidatesBySentence = {}
 
-
+    print "Creating ngrams"
     docSentences = {}
     filteredTrain={}
     docsLen={}  ##number of words
     for doc in dataset:
-#        print doc
+        print doc
 
         docContent=""
         candidatesDoc = []
@@ -226,13 +378,17 @@ def extractKeyphrases( train, dataset, keys):
         # GET SENTENCES
         docSentences[doc] = tok_sent(dataset[doc])
 
+        nSentences= len(docSentences[doc])
+        ngram_pos={}
+
         candidatesBySentence[doc] = []
         lengthDoc=0
 
         # GET NGRAMS
-        for sentence in docSentences[doc]:
+        for i,sentence in enumerate(docSentences[doc]):
             candidates = []
             candidates += tok(sentence)
+
 
             #length
             lengthDoc+= len(sentence.split())
@@ -246,16 +402,18 @@ def extractKeyphrases( train, dataset, keys):
             for ngram in candidates:
                 if ngram not in candidatesDoc:
                     candidatesDoc.append(ngram)
+                    ngram_pos[ngram]=(nSentences - i)/nSentences
 
         # print candidatesBySentence
         docsLen[doc]= lengthDoc
         candidatesByDoc[doc] = candidatesDoc
-        # print "print candidates doc" + doc
-        # print candidatesByDoc
-        filteredTrain[doc]=docContent
-   # print candidatesBySentence
+        candidatesDocSentenceWeight[doc]= ngram_pos
 
-    print "\nCreating Graphs...\n"
+        # print "print candidates doc" + doc
+
+        filteredTrain[doc]=docContent
+
+
 
     #CREATE GRAPHS
     graphs={}
@@ -264,33 +422,17 @@ def extractKeyphrases( train, dataset, keys):
         graph= createGraph(candidatesByDoc[doc], candidatesBySentence[doc])
         graphs[doc]= graph
 
-    # CALCULATE PRIOR
-    print "\nCalculating TF ...\n"
-    ####CALCULATES TF FOR INPUT ####
-    scoresTF = {}
-    for doc in candidatesByDoc:
-        scoresDoc= {}
-        for ngram in candidatesByDoc[doc]:
-            scoresDoc[ngram] = filteredTrain[doc].count(ngram)/docsLen[doc]
 
-        scoresTF[doc]=scoresDoc
+    # CALCULATE PRIORS
 
-    # print scoresTF
+    print "YEYY TF"
+    scoresTF = TF(candidatesByDoc, filteredTrain, docsLen)
 
-    print "\nCalculating IDF ...\n"
-    ####CALCULATES IDF FOR BACKGROUND COLLECTION ####
-    scoresIDF = {}
-    for doc in candidatesByDoc:
-        docScores={}
-        for ngram in candidatesByDoc[doc]:
-            # print ngram
-            nt = sum(1 for doc in filteredTrain if ngram in filteredTrain[doc]) #FALTA FILTERING TRAIN DATASET
-            # print NDocs
-            # print nt
-            docScores[ngram] = IDF(NDocs, nt)
-        scoresIDF[doc]=docScores
 
-    # print scoresIDF
+    print "YEYY IDF"
+    scoresIDF = IDF(candidatesByDoc, filteredTrain, NDocs)
+
+
 
     # avg length of the docs
     sumWords = 0
@@ -298,14 +440,38 @@ def extractKeyphrases( train, dataset, keys):
         sumWords += docsLen[doc]
     avgDL = sumWords / NDocs
 
-    print "\nCalculating BM25 ...\n"
+    print "YEYY BM25"
     ###Calculating BM25 --> PRIOR
     scoresBM25 = {}
     for doc in candidatesByDoc:
         scoreDoc={}
         for ngram in candidatesByDoc[doc]:
-            scoresDoc[ngram]= BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
-        scoresBM25[doc]=scoresDoc
+            scoreDoc[ngram]= BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
+        scoresBM25[doc]=scoreDoc
+
+    Priors = {}
+    Priors['SENTENCE'] = candidatesDocSentenceWeight
+    Priors['BM25'] = scoresBM25
+
+    ##CALCULATE PAGERANK
+    PageRankOriginal = {}
+    PageRankImproved = {}
+    for doc in candidatesByDoc:
+        print doc
+        pro = pagerank(graphs[doc], 0.15, 3)
+        # print "PAGERANK ORIGINAL"
+        # print sorted(pro.iteritems(), key=operator.itemgetter(1), reverse=True)
+        PageRankOriginal[doc] = pro
+
+        # print "PAGERANK IMPROVED -  SENTENCE AND CO-OCCURRENCE"
+        prISC = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'][doc], 0.15, 3)
+        # print sorted(prISC.iteritems(), key=operator.itemgetter(1), reverse=True)
+        # PageRankImproved[doc] = pri
+
+        # print "PAGERANK IMPROVED -  BM25 AND CO-OCCURRENCE"
+        prIBC = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['SENTENCE'][doc], 0.15, 3)
+        # print sorted(prIBC.iteritems(), key=operator.itemgetter(1), reverse=True)
+
 
     print"\nCreating Test Matrix ...\n"
 
@@ -326,20 +492,35 @@ def extractKeyphrases( train, dataset, keys):
     # Val = True if the ngram belongs to the keys of the doc False otherwise
     Xmatrix = {}
 
+    # pagerankImproved(graph, keywords, Prior, d, numloops)
+
     for i, doc in enumerate(candidatesByDoc):
+        docMatrix = {}
         for n,ngram in enumerate(candidatesByDoc[doc]):
             # Calc Tf-Idf and BM25
             tfIdf_Score = scoresIDF[doc][ngram]* scoresTF[doc][ngram]
             BM25_Score = BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
+            docPagerank = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'][doc], 0.15, 10)
 
             # If ngram belongs to the keys of that specific file = True or False Otherwise
             if ngram in keywordListByFile[i]:
-                Xmatrix[(tfIdf_Score, BM25_Score)] = True
+                docMatrix[(tfIdf_Score, BM25_Score, docPagerank[ngram])] = True
+                Xmatrix[doc] = docMatrix
             else:
-                Xmatrix[(tfIdf_Score, BM25_Score)] = False
+                docMatrix[(tfIdf_Score, BM25_Score, docPagerank[ngram])] = False
+                Xmatrix[doc] = docMatrix
 
 
-    print Xmatrix
+    # print "\n\n\n"
+    # for i, doc in enumerate(candidatesByDoc):
+    #     for n, ngram in enumerate(candidatesByDoc[doc]):
+    #         if ngram in keys[doc]:
+    #             print "MATCH"
+    #             print ngram
+    #
+    # print "\n\n\n"
+
+    # print Xmatrix
 
 
     print "\nPerceptron\n"
@@ -359,13 +540,10 @@ def extractKeyphrases( train, dataset, keys):
         # Multiplies the Test matrix by the ideal weight and theta returned by perceptron
         # checking if the value is bigger than theta
         # returns True if that happens or False otherwise
-        d = decision(key, weights, theta)
-        answer = "Wrong! :("
-        # If d = val it means that we correctly predictec that this specific ngram is a keyword
-        # because it is also present in the keys of the file were it appears
-        if d == val:
-            answer = "Correct! :)"
-        print answer, " --> ", key, d, val
+        d = dot_product(key, weights)
+        print d, " --> ", key
+
+
 
     #CALCULATE PAGERANK
     # PageRank={}
