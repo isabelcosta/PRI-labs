@@ -73,30 +73,22 @@ content = []
 
 root = etree.parse("http://rss.nytimes.com/services/xml/rss/nyt/World.xml")
 for title in root.xpath('//title'):
-    # print title.text
     if title.text != None:
         content.append(title.text)
 
 for description in root.xpath('//description'):
-    # print description.text
     if description.text != None:
         content.append(description.text)
 
 content = ' '.join(content)
-# print content
 
 print "\nFiltering document sentences ... "
 sentenceList = tok_sent(content)
-# print sentenceList
 
-candidates = []
-# stores candidates per phrase
 candidates_per_phrase = []
 
 for i, sent in enumerate(sentenceList):
     sentenceList[i] = "".join([c for c in sent if c not in string.punctuation])
-    # print "\nGetting ngrams for phrase " + str(i) + "... "
-    candidates += ngrams(sentenceList[i])
     candidates_per_phrase += [ngrams(sentenceList[i])]
 
 for i, sent in enumerate(sentenceList):
@@ -120,11 +112,10 @@ for phrase_n_grams in candidates_per_phrase:
                 if n_gram != other_gram:
                     graph[n_gram] += [other_gram]
 
-print "\nCalculating Pagerank ..."
+print "\nCalculating PageRank ..."
 
 keywordDic = pagerank(graph,0.15,1)
 
-keywordDicTop10 = sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:10]
 keywordDicTop50 = sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:50]
 
 wordList = []
@@ -144,14 +135,11 @@ wordListStr = ' '.join(wordList)
 
 print "\nCreating HTML page ... \n"
 
-f = open('Top5keywords.html','w')
-
+f = open('Top5keywords.html', 'w')
 message = generated_html_with_keyphrases(wordList, scoreList, wordListStr)
-
 f.write(message.encode("utf-8"))
 f.close()
 
-filePath = os.path.dirname(os.path.abspath(__file__));
+filePath = os.path.dirname(os.path.abspath(__file__))
 
-# print message
 webbrowser.open_new_tab(filePath +'\\Top5keywords.html')
