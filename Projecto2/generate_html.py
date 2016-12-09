@@ -1,4 +1,5 @@
- <!DOCTYPE html>
+def generated_html_with_keyphrases(wordList, scoreList, wordListStr):
+    message = """ <!DOCTYPE html>
     <meta charset="utf-8">
     <style>
     div#title {
@@ -45,44 +46,44 @@
               <th class="tg-amwm"> Score </th>
             </tr>
             <tr>
-              <td class="tg-baqh">said</td>
-              <td class="tg-baqh">0.00308499402797</td>
+              <td class="tg-baqh">""" + wordList[0] + """</td>
+              <td class="tg-baqh">""" + scoreList[0] + """</td>
             </tr>
             <tr>
-              <td class="tg-baqh">country</td>
-              <td class="tg-baqh">0.0017173889966</td>
+              <td class="tg-baqh">""" + wordList[1] + """</td>
+              <td class="tg-baqh">""" + scoreList[1] + """</td>
             </tr>
             <tr>
-              <td class="tg-baqh">south</td>
-              <td class="tg-baqh">0.0017018823097</td>
+              <td class="tg-baqh">""" + wordList[2] + """</td>
+              <td class="tg-baqh">""" + scoreList[2] + """</td>
             </tr>
             <tr>
-              <td class="tg-baqh">would</td>
-              <td class="tg-baqh">0.00168952520418</td>
+              <td class="tg-baqh">""" + wordList[3] + """</td>
+              <td class="tg-baqh">""" + scoreList[3] + """</td>
             </tr>
             <tr>
-              <td class="tg-baqh">president</td>
-              <td class="tg-baqh">0.00140980611704</td>
+              <td class="tg-baqh">""" + wordList[4] + """</td>
+              <td class="tg-baqh">""" + scoreList[4] + """</td>
             </tr>
               <tr>
-              <td class="tg-baqh">report</td>
-              <td class="tg-baqh">0.00122388583412</td>
+              <td class="tg-baqh">""" + wordList[5] + """</td>
+              <td class="tg-baqh">""" + scoreList[5] + """</td>
             </tr>
             <tr>
-              <td class="tg-baqh">countries</td>
-              <td class="tg-baqh">0.00119250709399</td>
+              <td class="tg-baqh">""" + wordList[6] + """</td>
+              <td class="tg-baqh">""" + scoreList[6] + """</td>
             </tr>
             <tr>
-              <td class="tg-baqh">also</td>
-              <td class="tg-baqh">0.00116837384156</td>
+              <td class="tg-baqh">""" + wordList[7] + """</td>
+              <td class="tg-baqh">""" + scoreList[7] + """</td>
             </tr>
             <tr>
-              <td class="tg-baqh">officials</td>
-              <td class="tg-baqh">0.00116227486003</td>
+              <td class="tg-baqh">""" + wordList[8] + """</td>
+              <td class="tg-baqh">""" + scoreList[8] + """</td>
             </tr>
             <tr>
-              <td class="tg-baqh">north</td>
-              <td class="tg-baqh">0.00115465867068</td>
+              <td class="tg-baqh">""" + wordList[9] + """</td>
+              <td class="tg-baqh">""" + scoreList[9] + """</td>
             </tr>
 
           </table>
@@ -154,7 +155,7 @@
             }
             }
             //Some sample data - http://en.wikiquote.org/wiki/Opening_lines
-            var words = [ "said country south would president report countries also officials north year korea park prime minister prime minister group campaign known germany us canada news project town make even say city american people men carter hundreds may china amid government office last next scandal leaders mr emissions geunhye park geunhye president park carbon donald"]
+            var words = [ """ + "\"" + wordListStr + "\"" + """]
             //Prepare one of the sample sentences by removing punctuation,
             // creating an array of words and computing a random size attribute.
             function getWords(i) {
@@ -181,4 +182,6 @@
 
     </body>
 
-    
+    """
+
+    return message
