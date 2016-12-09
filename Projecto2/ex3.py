@@ -97,14 +97,6 @@ def BM25( idf, tf, D, avgdl):
     return idf * top/bottom
 
 
-### PRIOR
-#def Prior():
-
-
-
-
-### WEIGHT
-
 
 """
     Calculates PageRank score for each n-gram
@@ -327,23 +319,42 @@ def perceptron(matrix):
         x += 1
         if x > 50:  # Being lazy for now
             converged = True
-
-        for key, val in matrix.iteritems():
-            # Multiplies both matrices and checks if the value is bigger than theta
-            # returns True if that happens or False otherwise
-            d = decision(key, weights, theta)
-            if d == val:
+        for val in matrix.iteritems():
+            # print val
+            # print val[1][:2]
+            # print val[1][-1]
+            d = decision(val[1][:2], weights, theta)
+            if d == val[1][-1]:
                 continue
-            elif d == False and val == True:
+            elif d == False and val[1][-1] == True:
                 theta -= 1
-                for i in range(len(key)):
-                    weights[i] += key[i]
+                for i in range(3):
+                    weights[i] += val[1][i]
 
-            elif d == True and val == False:
+            elif d == True and val[1][-1] == False:
                 theta += 1
-                for i in range(len(key)):
-                    weights[i] -= key[i]
+                for i in range(3):
+                    weights[i] -= val[1][i]
 
+
+        # for key, val in matrix.iteritems():
+        #     # Multiplies both matrices and checks if the value is bigger than theta
+        #     # returns True if that happens or False otherwise
+        #     d = decision(key, weights, theta)
+        #     if d == val:
+        #         continue
+        #     elif d == False and val == True:
+        #         theta -= 1
+        #         for i in range(len(key)):
+        #             weights[i] += key[i]
+        #
+        #     elif d == True and val == False:
+        #         theta += 1
+        #         for i in range(len(key)):
+        #             weights[i] -= key[i]
+
+    print "WEIGHTS:"
+    print weights
     # Returns the ideal weights
     return weights
 
@@ -487,76 +498,82 @@ def extractKeyphrases( train, dataset, keys):
         keywordListByFile += [keywordList]
 
 
-    # Creates a matrix ---> dic { (feature1, feaature2,...): Val }
-    # Features ex: BM25, Pagerank, TF-Idf, ...
-    # Val = True if the ngram belongs to the keys of the doc False otherwise
-    Xmatrix = {}
+    # # Creates a matrix ---> dic { (feature1, feaature2,...): Val }
+    # # Features ex: BM25, Pagerank, TF-Idf, ...
+    # # Val = True if the ngram belongs to the keys of the doc False otherwise
+    # Xmatrix = {}
+    #
+    # # pagerankImproved(graph, keywords, Prior, d, numloops)
+    #
+    # for i, doc in enumerate(candidatesByDoc):
+    #     docMatrix = {}
+    #     for n,ngram in enumerate(candidatesByDoc[doc]):
+    #         # Calc Tf-Idf and BM25
+    #         tfIdf_Score = scoresIDF[doc][ngram]* scoresTF[doc][ngram]
+    #         BM25_Score = BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
+    #         docPagerank = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'][doc], 0.15, 10)
+    #
+    #         # If ngram belongs to the keys of that specific file = True or False Otherwise
+    #         if ngram in keywordListByFile[i]:
+    #             docMatrix[(tfIdf_Score, BM25_Score, docPagerank[ngram])] = True
+    #             Xmatrix[doc] = docMatrix
+    #         else:
+    #             docMatrix[(tfIdf_Score, BM25_Score, docPagerank[ngram])] = False
+    #             Xmatrix[doc] = docMatrix
+    #
+    #
+    # print Xmatrix
+    # print "\n\n\n"
+    # for doc in Xmatrix:
+    #     print doc
+    #     print Xmatrix[doc]
+    #
+    # print "\n\n\n"
+
+    Ymatrix = {}
 
     # pagerankImproved(graph, keywords, Prior, d, numloops)
 
     for i, doc in enumerate(candidatesByDoc):
         docMatrix = {}
-        for n,ngram in enumerate(candidatesByDoc[doc]):
+        for n, ngram in enumerate(candidatesByDoc[doc]):
             # Calc Tf-Idf and BM25
-            tfIdf_Score = scoresIDF[doc][ngram]* scoresTF[doc][ngram]
+            tfIdf_Score = scoresIDF[doc][ngram] * scoresTF[doc][ngram]
             BM25_Score = BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
             docPagerank = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'][doc], 0.15, 10)
-
-            # If ngram belongs to the keys of that specific file = True or False Otherwise
             if ngram in keywordListByFile[i]:
-                docMatrix[(tfIdf_Score, BM25_Score, docPagerank[ngram])] = True
-                Xmatrix[doc] = docMatrix
+                docMatrix[ngram] = [tfIdf_Score, BM25_Score, docPagerank[ngram], True]
             else:
-                docMatrix[(tfIdf_Score, BM25_Score, docPagerank[ngram])] = False
-                Xmatrix[doc] = docMatrix
-
-
-    print "\n\n\n"
-    for doc in Xmatrix:
-        print doc
-        print Xmatrix[doc]
-
-    print "\n\n\n"
-
-    # print Xmatrix
-
-
-    print "\nPerceptron\n"
+                docMatrix[ngram] = [tfIdf_Score, BM25_Score, docPagerank[ngram], False]
+        Ymatrix[doc] = docMatrix
 
 
 
-    scoresByDoc = {}
-    for docMatrix in Xmatrix:
-        scoreByNgram = {}
-        # weightsByDoc[docMatrix] = perceptron(Xmatrix[docMatrix])
-        for ngram in Xmatrix[docMatrix]:
+    print "\nPerceptron ...\n"
 
-            scoreByNgram[ngram] = dot_product(ngram, perceptron(Xmatrix[docMatrix]))
-            scoresByDoc[docMatrix] = scoreByNgram
 
-        print scoresByDoc
+
+    weightsByDoc = {}
+    for docMatrix in Ymatrix:
+            weightsByDoc[docMatrix] = perceptron(Ymatrix[docMatrix])
 
 
 
 
+    allTop5scores = {}
+    for docMatrix in Ymatrix:
+        scoresByDoc = {}
+        for ngram in Ymatrix[docMatrix]:
+            d = dot_product(Ymatrix[docMatrix][ngram][:3], weightsByDoc[docMatrix])
+            scoresByDoc[ngram] = d
+        allTop5scores[docMatrix] = dict(sorted(scoresByDoc.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
 
-    print "\nPerceptron Result: \n"
+    print "\nTop 5 keywords by document: ...\n"
 
-
-    # for docMatrix in Xmatrix:
-    #     # Multiplies the Test matrix by the ideal weight and theta returned by perceptron
-    #     # checking if the value is bigger than theta
-    #     # returns True if that happens or False otherwise
-    #     d = dot_product(key, weights)
-    #     print d, " --> ", key
-    #
-
-
-    #CALCULATE PAGERANK
-    # PageRank={}
-    # for doc in candidatesByDoc:
-    #     pr=pagerank(graphs[doc], candidatesByDoc[doc], scoresBM25[doc], graphs[doc], 0.15, 3):
-
+    for doc in allTop5scores:
+        print "\nDoc: " + doc + "\n"
+        for ngram in allTop5scores[doc]:
+            print ngram, " --> ", allTop5scores[doc][ngram]
 
 # --------------------------------------------------------------------#
 
@@ -572,7 +589,7 @@ trainData = train.data[:10]
 
 
 # Get relative path to documents
-datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\\documents\\";
+datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\\maui-semeval2010-train\\";
 
 
 # Get all documents in "documents" directory into fileList
