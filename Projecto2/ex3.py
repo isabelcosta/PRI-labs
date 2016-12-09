@@ -4,22 +4,13 @@ from sklearn.datasets import fetch_20newsgroups
 import string
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
-from nltk.tokenize import word_tokenize
-from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 import operator
 import itertools
 import os
-from math import*
 from math import log
-from sklearn.linear_model import Perceptron
-from numpy import dot
-
-
 
 stopWords = list(stopwords.words('english'))
-
-
 
 ##############  FUNCTIONS  ##################
 
@@ -65,10 +56,7 @@ def IDF(candidatesByDoc, filteredTrain, NDocs):
     for doc in candidatesByDoc:
         docScores={}
         for ngram in candidatesByDoc[doc]:
-            #print ngram
             nt = sum(1 for doc in filteredTrain if ngram in filteredTrain[doc]) #FALTA FILTERING TRAIN DATASET
-            #print NDocs
-            #print nt
             docScores[ngram] = log(1+(NDocs-nt+0.5)/(nt+0.5))
         scoresIDF[doc]=docScores
     return scoresIDF
@@ -126,16 +114,13 @@ def pagerank(graph, d, numloops):
         ranks = newranks
     return ranks
 
-
 ### PAGERANK IMPROVED
 def pagerankImproved(graph, keywords, Prior, d, numloops):
 
     ranks = {}
-
     nCandidates = len(graph)
     for ngram in graph:
         ranks[ngram] = 1.0 / nCandidates
-
 
     SumAllPriors=0
     for x in Prior.values():
@@ -151,7 +136,7 @@ def pagerankImproved(graph, keywords, Prior, d, numloops):
             #
             Sum =0
 
-            weights= graph[ngram]
+            weights = graph[ngram]
 
             for co_oc in graph[ngram]:
 
@@ -179,10 +164,6 @@ def pagerankImproved(graph, keywords, Prior, d, numloops):
         ranks[ng]=ranks[ng]/nCandidates
 
     return ranks
-
-
-
-
 
 def createGraph(DocCandidates, candidatesBySentences):
 
@@ -226,11 +207,8 @@ def extract_candidate_chunks(text, grammar=r'KT: {(<JJ>* <NN.*>+ <IN>)? <JJ>* <N
 
     return [cand for cand in candidates]
 
-
-
 def wordToNgrams(text, n, exact=True):
     return [" ".join(j) for j in zip(*[text[i:] for i in range(n)])]
-
 
 def ngrams(text):
 
@@ -248,11 +226,6 @@ def ngrams(text):
 
     return finalCandidates
 
-
-###
-
-
-
 def tok(text):
 
     text = "".join([c for c in text if c not in string.punctuation])
@@ -267,14 +240,12 @@ def tok(text):
 
     # Limit to the regular expression
     #print "\nExtracting keyphrases ... "
-    result= extract_candidate_chunks(tokensWithoutStopWords.encode('utf-8'))
+    result = extract_candidate_chunks(tokensWithoutStopWords.encode('utf-8'))
 
     #choosing ngrams n=[1,3]
     final = [ngram for ngram in result if len(ngram.split())<=3]
 
-    #print final
     return final
-
 
 def tok_sent(text):
 
@@ -290,10 +261,6 @@ def tok_sent(text):
         text="".join([c for c in sentence if c not in string.punctuation])
         text = ''.join([c for c in text if not c.isdigit()])
         sentenceList[i] =text
-
-
-    # for sent in sentList:
-    #      print sent
 
     return sentenceList
 
@@ -313,7 +280,6 @@ def perceptron(matrix):
     x = 0
     theta = 0
     converged = False
-
 
     while not converged:
         x += 1
@@ -336,33 +302,13 @@ def perceptron(matrix):
                 for i in range(3):
                     weights[i] -= val[1][i]
 
-
-        # for key, val in matrix.iteritems():
-        #     # Multiplies both matrices and checks if the value is bigger than theta
-        #     # returns True if that happens or False otherwise
-        #     d = decision(key, weights, theta)
-        #     if d == val:
-        #         continue
-        #     elif d == False and val == True:
-        #         theta -= 1
-        #         for i in range(len(key)):
-        #             weights[i] += key[i]
-        #
-        #     elif d == True and val == False:
-        #         theta += 1
-        #         for i in range(len(key)):
-        #             weights[i] -= key[i]
-
     print "WEIGHTS:"
     print weights
+
     # Returns the ideal weights
     return weights
 
-
-
 ##############################################################
-##############################################################
-
 
 def extractKeyphrases( train, dataset, keys):
 
@@ -389,8 +335,8 @@ def extractKeyphrases( train, dataset, keys):
         # GET SENTENCES
         docSentences[doc] = tok_sent(dataset[doc])
 
-        nSentences= len(docSentences[doc])
-        ngram_pos={}
+        nSentences = len(docSentences[doc])
+        ngram_pos = {}
 
         candidatesBySentence[doc] = []
         lengthDoc=0
@@ -433,17 +379,13 @@ def extractKeyphrases( train, dataset, keys):
         graph= createGraph(candidatesByDoc[doc], candidatesBySentence[doc])
         graphs[doc]= graph
 
-
     # CALCULATE PRIORS
 
     print "YEYY TF"
     scoresTF = TF(candidatesByDoc, filteredTrain, docsLen)
 
-
     print "YEYY IDF"
     scoresIDF = IDF(candidatesByDoc, filteredTrain, NDocs)
-
-
 
     # avg length of the docs
     sumWords = 0
@@ -497,39 +439,6 @@ def extractKeyphrases( train, dataset, keys):
             keywordList += [line]
         keywordListByFile += [keywordList]
 
-
-    # # Creates a matrix ---> dic { (feature1, feaature2,...): Val }
-    # # Features ex: BM25, Pagerank, TF-Idf, ...
-    # # Val = True if the ngram belongs to the keys of the doc False otherwise
-    # Xmatrix = {}
-    #
-    # # pagerankImproved(graph, keywords, Prior, d, numloops)
-    #
-    # for i, doc in enumerate(candidatesByDoc):
-    #     docMatrix = {}
-    #     for n,ngram in enumerate(candidatesByDoc[doc]):
-    #         # Calc Tf-Idf and BM25
-    #         tfIdf_Score = scoresIDF[doc][ngram]* scoresTF[doc][ngram]
-    #         BM25_Score = BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
-    #         docPagerank = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'][doc], 0.15, 10)
-    #
-    #         # If ngram belongs to the keys of that specific file = True or False Otherwise
-    #         if ngram in keywordListByFile[i]:
-    #             docMatrix[(tfIdf_Score, BM25_Score, docPagerank[ngram])] = True
-    #             Xmatrix[doc] = docMatrix
-    #         else:
-    #             docMatrix[(tfIdf_Score, BM25_Score, docPagerank[ngram])] = False
-    #             Xmatrix[doc] = docMatrix
-    #
-    #
-    # print Xmatrix
-    # print "\n\n\n"
-    # for doc in Xmatrix:
-    #     print doc
-    #     print Xmatrix[doc]
-    #
-    # print "\n\n\n"
-
     Ymatrix = {}
 
     # pagerankImproved(graph, keywords, Prior, d, numloops)
@@ -547,18 +456,11 @@ def extractKeyphrases( train, dataset, keys):
                 docMatrix[ngram] = [tfIdf_Score, BM25_Score, docPagerank[ngram], False]
         Ymatrix[doc] = docMatrix
 
-
-
     print "\nPerceptron ...\n"
-
-
 
     weightsByDoc = {}
     for docMatrix in Ymatrix:
             weightsByDoc[docMatrix] = perceptron(Ymatrix[docMatrix])
-
-
-
 
     allTop5scores = {}
     for docMatrix in Ymatrix:
@@ -575,6 +477,7 @@ def extractKeyphrases( train, dataset, keys):
         for ngram in allTop5scores[doc]:
             print ngram, " --> ", allTop5scores[doc][ngram]
 
+    return allTop5scores
 # --------------------------------------------------------------------#
 
 fileList = {}
@@ -587,10 +490,8 @@ predictedKeyphrases = []
 train = fetch_20newsgroups(subset='train')
 trainData = train.data[:10]
 
-
 # Get relative path to documents
 datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\\maui-semeval2010-train\\";
-
 
 # Get all documents in "documents" directory into fileList
 # Import documents into fileList
@@ -617,5 +518,27 @@ inputData["doc1"]= inputCont
 
 keyphrases = extractKeyphrases(fileList, fileList, keyList)
 
+print keyphrases
 
+# all precisions to be used in mean average precision
+allPrecisions = []
 
+for docName, n_grams_stats in keyphrases:
+    docKeyphrases = []
+
+    # Get all document's known keyphrases in "keys" directory into knownKeyphrases
+    # Import documents into fileList0
+    fKeys = open(datasetPath + docName + ".key", 'r')
+    docKeyphrases = fKeys.read()
+    fKeys.close()
+
+    knownKeyphrases = docKeyphrases.splitlines()
+    knownKeyphrases = [x.decode("unicode_escape") for x in knownKeyphrases]
+    predictedKeyphrases = n_grams_stats.keys()
+    # print knownKeyphrases
+    # print predictedKeyphrases
+
+    # Performance metrics - Calculate precision, recall, F1 scores and mean average precision
+    allPrecisions += [calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases)[0]]
+
+calc_mean_avg_precision(allPrecisions)
