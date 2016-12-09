@@ -2,14 +2,16 @@ import os
 
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
-from nltk import ngrams
 import string
 from lxml import etree
 import operator
 import webbrowser
-import csv
+
+############### Global Variables ####################
 
 stopWords = list(stopwords.words('english'))
+
+############### Functions ###########################
 
 def wordToNgrams(text, n, exact=True):
     return [" ".join(j) for j in zip(*[text[i:] for i in range(n)])]
@@ -64,7 +66,7 @@ def pagerank(graph, d, numloops):
         ranks = newranks
     return ranks
 
-###################################################################
+###################### Execution ##########################
 
 content = []
 
@@ -124,10 +126,8 @@ keywordDic = pagerank(graph,0.15,1)
 keywordDicTop10 = sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:10]
 keywordDicTop50 = sorted(keywordDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:50]
 
-
 wordList = []
 scoreList = []
-
 
 for keyword in keywordDicTop50:
     wordList += [keyword[0]]
@@ -140,23 +140,6 @@ for keyword in keywordDicTop50[:10]:
     print keyword[0] + " --> " + str(keyword[1])
 
 wordListStr = ' '.join(wordList)
-
-# print wordList
-# print scoreList
-
-# print "\nCreating CSV ..."
-#
-#
-# with open('Top10keywords.csv', 'wb') as f:  # Just use 'w' mode in 3.x
-#     w = csv.writer(f)
-#     w.writerow(('Keyword', 'Score'))
-#     w.writerows(keywordDicTop10.items())
-
-
-
-# for ngram in teste:
-#     print ngram
-#     print keywordDicTop10[ngram]
 
 print "\nCreating HTML page ... \n"
 
@@ -346,8 +329,6 @@ div#table {
 </body>
 
 """
-
-
 
 f.write(message.encode("utf-8"))
 f.close()
