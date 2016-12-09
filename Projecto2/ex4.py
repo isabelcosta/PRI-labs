@@ -1,3 +1,5 @@
+import os
+
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
 from nltk import ngrams
@@ -350,5 +352,7 @@ div#table {
 f.write(message.encode("utf-8"))
 f.close()
 
+filePath = os.path.dirname(os.path.abspath(__file__));
+
 # print message
-# webbrowser.open_new_tab('C:\Users\Fernando\Desktop\PRI\PRI-labs\Projecto2\Top5keywords.html')
+webbrowser.open_new_tab(filePath +'\\Top5keywords.html')
