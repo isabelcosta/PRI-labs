@@ -322,7 +322,6 @@ def perceptron(matrix):
     theta = 0
     converged = False
 
-    print "\nPERCEPTRON\n"
 
     while not converged:
         x += 1
@@ -344,8 +343,9 @@ def perceptron(matrix):
                 theta += 1
                 for i in range(len(key)):
                     weights[i] -= key[i]
-    # Returns the ideal weight and theta
-    return weights, theta
+
+    # Returns the ideal weights
+    return weights
 
 
 
@@ -511,38 +511,45 @@ def extractKeyphrases( train, dataset, keys):
                 Xmatrix[doc] = docMatrix
 
 
-    # print "\n\n\n"
-    # for i, doc in enumerate(candidatesByDoc):
-    #     for n, ngram in enumerate(candidatesByDoc[doc]):
-    #         if ngram in keys[doc]:
-    #             print "MATCH"
-    #             print ngram
-    #
-    # print "\n\n\n"
+    print "\n\n\n"
+    for doc in Xmatrix:
+        print doc
+        print Xmatrix[doc]
+
+    print "\n\n\n"
 
     # print Xmatrix
 
 
     print "\nPerceptron\n"
 
-    # Penso nao haver problema em usar o mesmo dataset como test
-    trainMatrix = Xmatrix
-    testMatrix = Xmatrix
 
-    weights, theta = perceptron(trainMatrix)
 
-    print "\nIdeal weights and theta: \n"
-    print weights, theta
+    scoresByDoc = {}
+    for docMatrix in Xmatrix:
+        scoreByNgram = {}
+        # weightsByDoc[docMatrix] = perceptron(Xmatrix[docMatrix])
+        for ngram in Xmatrix[docMatrix]:
+
+            scoreByNgram[ngram] = dot_product(ngram, perceptron(Xmatrix[docMatrix]))
+            scoresByDoc[docMatrix] = scoreByNgram
+
+        print scoresByDoc
+
+
+
+
 
     print "\nPerceptron Result: \n"
 
-    for key, val in testMatrix.iteritems():
-        # Multiplies the Test matrix by the ideal weight and theta returned by perceptron
-        # checking if the value is bigger than theta
-        # returns True if that happens or False otherwise
-        d = dot_product(key, weights)
-        print d, " --> ", key
 
+    # for docMatrix in Xmatrix:
+    #     # Multiplies the Test matrix by the ideal weight and theta returned by perceptron
+    #     # checking if the value is bigger than theta
+    #     # returns True if that happens or False otherwise
+    #     d = dot_product(key, weights)
+    #     print d, " --> ", key
+    #
 
 
     #CALCULATE PAGERANK
