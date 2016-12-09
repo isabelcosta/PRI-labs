@@ -124,7 +124,6 @@ def extractKeyphrases(document):
                     if n_gram != other_gram:
                         graph[n_gram] += [other_gram]
 
-
     """
     phrase: era uma vez. abc vez.
 
@@ -142,7 +141,7 @@ def extractKeyphrases(document):
 
     print "Calculating Pagerank ... "
 
-    pagerankDic = pagerank(graph,0.15,50)
+    pagerankDic = pagerank(graph,0.15,20)
 
     pagerankDicTop5 = dict(sorted(pagerankDic.iteritems(), key=operator.itemgetter(1), reverse=True)[:5])
 
@@ -155,7 +154,7 @@ def extractKeyphrases(document):
 
 print "\nGetting document ..."
 #input doc that we want to extraxt keyphrases from
-document = open("input.txt", 'r')
+document = open("input2.txt", 'r')
 doc = document.read()
 doc = doc.decode("unicode_escape")
 
