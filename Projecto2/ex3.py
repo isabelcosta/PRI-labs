@@ -16,36 +16,14 @@ stopWords = list(stopwords.words('english'))
 
 ### Mean Precision
 
-def calc_precision(tp, fp):
-    return float(tp / (tp + fp))
-
-def calc_recall(tp, fn):
-    return float(tp / (tp + fn))
-
-def calc_f1(precision, recall):
-    if precision == 0 and recall == 0:
-        return "N/A"
-    return 2 * ((precision * recall) / (precision + recall))
-
-def calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases):
-
+def precisonCalc(knownKeyphrases, predictedKeyphrases):
     tp = sum(1 for key in knownKeyphrases if key in predictedKeyphrases)
-    # tp = sum(1 for key in predictedKeyphrases if key in knownKeyphrases)
-
-    fn = len(knownKeyphrases) - tp
     fp = len(predictedKeyphrases) - tp
 
-    precision = calc_precision(tp, fp)
-    recall = calc_recall(tp, fn)
-
-    f1_score = calc_f1(precision, recall)
-
-    print docName + ": " + str(precision) + ", " + str(recall) + ", " + str(f1_score)
-    return precision, recall, f1_score
+    return float(tp / (tp + fp))
 
 def calc_mean_avg_precision(all_precisions):
     mean_avg_precision =  sum(all_precisions)/len(all_precisions)
-    print "Mean Average Precision: \t" + str(mean_avg_precision)
     return mean_avg_precision
 
 
@@ -429,7 +407,7 @@ def extractKeyphrases( train, dataset, keys):
     print"\nCreating Test Matrix ...\n"
 
     # List of keywords for each file in the colection
-    keywordListByFile = []
+    keywordListByFile = {}
 
     for keyFile in keys:
         # List of keywords in each file
@@ -437,20 +415,20 @@ def extractKeyphrases( train, dataset, keys):
         for line in keys[keyFile].splitlines():
             # Adds a list of the file keywords to the main(keywordListByFile) list
             keywordList += [line]
-        keywordListByFile += [keywordList]
+        keywordListByFile[keyFile]=keywordList
 
     Ymatrix = {}
 
     # pagerankImproved(graph, keywords, Prior, d, numloops)
 
-    for i, doc in enumerate(candidatesByDoc):
+    for doc in candidatesByDoc:
         docMatrix = {}
         for n, ngram in enumerate(candidatesByDoc[doc]):
             # Calc Tf-Idf and BM25
             tfIdf_Score = scoresIDF[doc][ngram] * scoresTF[doc][ngram]
             BM25_Score = BM25(scoresIDF[doc][ngram], scoresTF[doc][ngram], docsLen[doc], avgDL)
             docPagerank = pagerankImproved(graphs[doc], candidatesByDoc[doc], Priors['BM25'][doc], 0.15, 10)
-            if ngram in keywordListByFile[i]:
+            if ngram in keywordListByFile[doc]:
                 docMatrix[ngram] = [tfIdf_Score, BM25_Score, docPagerank[ngram], True]
             else:
                 docMatrix[ngram] = [tfIdf_Score, BM25_Score, docPagerank[ngram], False]
@@ -477,6 +455,22 @@ def extractKeyphrases( train, dataset, keys):
         for ngram in allTop5scores[doc]:
             print ngram, " --> ", allTop5scores[doc][ngram]
 
+
+    precisions={}
+    for document in allTop5scores:
+        p = precisonCalc(allTop5scores[document].keys(), keyList[doc])
+        precisions[doc]=p
+
+    MAP = calc_mean_avg_precision(precisions.values())
+
+    print "\n"
+    print "Mean Average Precision : " + str(MAP)
+
+
+
+
+
+
     return allTop5scores
 # --------------------------------------------------------------------#
 
@@ -491,7 +485,7 @@ train = fetch_20newsgroups(subset='train')
 trainData = train.data[:10]
 
 # Get relative path to documents
-datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\\maui-semeval2010-train\\";
+datasetPath = os.path.dirname(os.path.abspath(__file__)) + "\\documents\\";
 
 # Get all documents in "documents" directory into fileList
 # Import documents into fileList
@@ -518,27 +512,3 @@ inputData["doc1"]= inputCont
 
 keyphrases = extractKeyphrases(fileList, fileList, keyList)
 
-print keyphrases
-
-# all precisions to be used in mean average precision
-allPrecisions = []
-
-for docName, n_grams_stats in keyphrases:
-    docKeyphrases = []
-
-    # Get all document's known keyphrases in "keys" directory into knownKeyphrases
-    # Import documents into fileList0
-    fKeys = open(datasetPath + docName + ".key", 'r')
-    docKeyphrases = fKeys.read()
-    fKeys.close()
-
-    knownKeyphrases = docKeyphrases.splitlines()
-    knownKeyphrases = [x.decode("unicode_escape") for x in knownKeyphrases]
-    predictedKeyphrases = n_grams_stats.keys()
-    # print knownKeyphrases
-    # print predictedKeyphrases
-
-    # Performance metrics - Calculate precision, recall, F1 scores and mean average precision
-    allPrecisions += [calc_precision_recall_f1_score(docName, knownKeyphrases, predictedKeyphrases)[0]]
-
-calc_mean_avg_precision(allPrecisions)
